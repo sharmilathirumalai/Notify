@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">notify</string>
+    <string name="open_camera">Capture Text</string>
+    <string name="camera_permission_granted">Camera Access Granted</string>
+    <string name="camera_permission_deined">Camera Access Denied</string>
+
 </resources>
