@@ -2,7 +2,6 @@ package com.example.notify;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -28,13 +27,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
-
-//        FragmentTransaction transaction = supportFragmentManager.beginTransaction();
-//        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
-//        transaction.replace(R.id.content_frame, fragment);
-//        transaction.addToBackStack(null);
-//        transaction.commit();
-
     }
 
     @Override

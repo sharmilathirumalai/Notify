@@ -50,6 +50,7 @@ public class MainPage extends Fragment {
     private static final int CAMERA_PERMISSION_REQUEST = 1888;
     private ImageView posterImg;
     private String mCurrentPhotoPath;
+    public static final String actionType = "OCR";
 
     public MainPage() {
         // Required empty public constructor
@@ -281,6 +282,11 @@ public class MainPage extends Fragment {
         TextView textView = getActivity().findViewById(R.id.text_result);
         textView.setText(sb);
 
+        // calling new activity to save the extracted information
+        Intent myIntent = new Intent(getActivity().getApplicationContext(), SaveEvent.class);
+        myIntent.putExtra(SaveEvent.actionType, actionType);
+        myIntent.putExtra(SaveEvent.message, sb+"");
+        startActivity(myIntent);
     }
 
 }

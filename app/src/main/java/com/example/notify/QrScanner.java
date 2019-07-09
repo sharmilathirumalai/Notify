@@ -14,25 +14,25 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 public class QrScanner extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     private ZXingScannerView scannerView;
     private static final String TAG = "scanner";
-    public static final String message = "event";
+    public static final String actionType = "QR";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         scannerView = new ZXingScannerView(this);
         setContentView(scannerView);
         scannerView.setResultHandler(this);
         scannerView.startCamera();
     }
 
-
+    // callback method through which we can get access to the result object
     @Override
     public void handleResult(Result result) {
         Log.d(TAG, "handleResult: " + result.getText());
-        Intent myIntent = new Intent(getApplicationContext(), SaveEventQR.class);
-        myIntent.putExtra("event", result.getText());
+        Intent myIntent = new Intent(getApplicationContext(), SaveEvent.class);
+        myIntent.putExtra(SaveEvent.actionType, actionType);
+        myIntent.putExtra(SaveEvent.message, result.getText());
         startActivity(myIntent);
     }
 }
