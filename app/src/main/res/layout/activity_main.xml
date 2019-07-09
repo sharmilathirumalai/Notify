@@ -1,26 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:id="@+id/launch_camera"
-        android:text="@string/open_camera"/>
-    <TextView
-        android:id="@+id/text_result"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:textSize="18sp"/>
-    <ImageView
-        android:id="@+id/poster_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="4"/>
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
-</LinearLayout>
+    <FrameLayout
+        android:id="@+id/id_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/primary_red"
+        app:layout_constraintBotton_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintTop_toTopOf="parent"></FrameLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:itemIconTint="@color/bottom_nav_color"
+        app:itemTextColor="@color/bottom_nav_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+<!--<LinearLayout-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:gravity="center_horizontal"-->
+    <!--android:orientation="vertical">-->
+    <!--&lt;!&ndash;<Button&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="50dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/launch_camera"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:text="@string/open_camera"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;<Button&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="50dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/launch_qrscanner"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:text="QR"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/text_result"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="0dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:gravity="center"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:textSize="18sp"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;<ImageView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/poster_view"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="0dp"/>&ndash;&gt;-->
+
+    <!--<FrameLayout-->
+        <!--android:id="@+id/id_frame"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--app:layout_constraintBotton_toTopOf="@+id/bottom_navigation"-->
+        <!--app:layout_constraintEnd_toEndof="parent"-->
+        <!--app:layout_constraintEnd_toStartof="parent"-->
+        <!--app:layout_constraintEnd_toTopof="parent"></FrameLayout>-->
+
+    <!--<com.google.android.material.bottomnavigation.BottomNavigationView-->
+        <!--android:id="@+id/bottom_navigation"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@color/white"-->
+        <!--app:itemIconTint="@color/bottom_nav_color"-->
+        <!--app:itemTextColor="@color/bottom_nav_color"-->
+        <!--app:menu="@menu/bottom_nav_menu"/>-->
+
+<!--</LinearLayout>-->

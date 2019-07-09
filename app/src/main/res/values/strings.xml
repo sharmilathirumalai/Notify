@@ -1,7 +1,12 @@
 <resources>
-    <string name="app_name">notify</string>
+    <string name="app_name">Notify</string>
     <string name="open_camera">Capture Text</string>
     <string name="camera_permission_granted">Camera Access Granted</string>
     <string name="camera_permission_deined">Camera Access Denied</string>
 
+    <string name="title_home">Home</string>
+    <string name="title_events">Events</string>
+    <string name="settings">Settings</string>
+
+    <string name="label_event_name">Event name</string>
 </resources>

@@ -30,11 +30,13 @@ import android.widget.Toast;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import android.view.MenuItem;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -43,6 +45,28 @@ public class MainActivity extends AppCompatActivity {
     private static final int CAMERA_PERMISSION_REQUEST = 1888;
     private ImageView posterImg;
     private String mCurrentPhotoPath;
+    private TextView mTextMessage;
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+//                    mTextMessage.setText(R.string.title_home);
+                    return true;
+                case R.id.navigation_dashboard:
+//                    mTextMessage.setText(R.string.title_dashboard);
+                    return true;
+                case R.id.navigation_notifications:
+//                    mTextMessage.setText(R.string.title_notifications);
+                    return true;
+            }
+            return false;
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +74,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button launchCamera = (Button) findViewById(R.id.launch_camera);
         posterImg = (ImageView) findViewById(R.id.poster_view);
+
+        Button launchQR = (Button) findViewById(R.id.launch_qrscanner);
+
         final Activity mActivity = this;
+
+        launchQR.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(getApplicationContext(), QrScanner.class);
+                startActivity(myIntent);
+            }
+        });
 
         launchCamera.setOnClickListener(new View.OnClickListener() {
             @Override
