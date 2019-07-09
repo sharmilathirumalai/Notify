@@ -9,4 +9,8 @@
     <string name="settings">Settings</string>
 
     <string name="label_event_name">Event name</string>
+    <string name="label_priority">Priority</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello main page fragment</string>
 </resources>
