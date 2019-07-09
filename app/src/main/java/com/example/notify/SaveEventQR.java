@@ -23,6 +23,7 @@ public class SaveEventQR extends AppCompatActivity {
         String message = intent.getStringExtra(QrScanner.message);
 
         try {
+            Log.d(TAG, "message: "+message);
             JSONObject messageObject = new JSONObject(message);
             Toast.makeText(this, messageObject+"", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "messageObject: "+messageObject);

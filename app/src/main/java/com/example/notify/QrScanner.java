@@ -31,8 +31,6 @@ public class QrScanner extends AppCompatActivity implements ZXingScannerView.Res
     @Override
     public void handleResult(Result result) {
         Log.d(TAG, "handleResult: " + result.getText());
-        Toast.makeText(this, result.getText(), Toast.LENGTH_SHORT).show();
-
         Intent myIntent = new Intent(getApplicationContext(), SaveEventQR.class);
         myIntent.putExtra("event", result.getText());
         startActivity(myIntent);
