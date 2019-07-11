@@ -26,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,7 +49,7 @@ public class MainPage extends Fragment {
     private static final String TAG = "MainPage";
     private static final int CAMERA_PERMISSION_CODE = 100;
     private static final int CAMERA_PERMISSION_REQUEST = 1888;
-    private ImageView posterImg;
+    //private ImageView posterImg;
     private String mCurrentPhotoPath;
     public static final String actionType = "OCR";
 
@@ -63,10 +64,10 @@ public class MainPage extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main_page, container, false);
 
 
-        Button launchCamera = view.findViewById(R.id.launch_camera);
-        posterImg = view.findViewById(R.id.poster_view);
+        ImageButton launchCamera = view.findViewById(R.id.launch_camera);
+        //posterImg = view.findViewById(R.id.poster_view);
 
-        Button launchQR = (Button) view.findViewById(R.id.launch_qrscanner);
+        ImageButton launchQR = view.findViewById(R.id.launch_qrscanner);
 
         final Activity mActivity = getActivity();
 
@@ -106,7 +107,32 @@ public class MainPage extends Fragment {
         });
 
 
+        ImageView image;
+
+        image = view.findViewById(R.id.imageView2);
+        setImage(image);
+
+        TextView dateview = view.findViewById(R.id.textView_date);
+        setDate(dateview);
+
+        TextView info = view.findViewById(R.id.textView_info);
+        setinfo(info);
+
         return view;
+    }
+
+    private void setDate(TextView view) {
+        String str = String.format("%tc", new Date());
+        view.setText(str);
+    }
+
+    private void setImage(ImageView image) {
+        image.setImageResource(R.drawable.ic_photo_frame);
+    }
+
+    private void setinfo(TextView info) {
+        String str_info = "Halifax Data Science\n" + "Social Meetup - Foggy Google\n" + "6pm";
+        info.setText(str_info);
     }
 
 
@@ -155,7 +181,7 @@ public class MainPage extends Fragment {
             }
             Bitmap modifiedPicture = null;
             Uri tempuri = data.getData();
-            posterImg.setImageBitmap(picture);
+            //posterImg.setImageBitmap(picture);
 
             try {
                 modifiedPicture = modifyOrientation(picture, getRealImgPath(tempuri));
@@ -279,13 +305,13 @@ public class MainPage extends Fragment {
                 sb.append(" ");
             }
         }
-        TextView textView = getActivity().findViewById(R.id.text_result);
-        textView.setText(sb);
+        //TextView textView = getActivity().findViewById(R.id.text_result);
+//        textView.setText(sb);
 
         // calling new activity to save the extracted information
         Intent myIntent = new Intent(getActivity().getApplicationContext(), SaveEvent.class);
         myIntent.putExtra(SaveEvent.actionType, actionType);
-        myIntent.putExtra(SaveEvent.message, sb+"");
+        myIntent.putExtra(SaveEvent.message, sb + "");
         startActivity(myIntent);
     }
 

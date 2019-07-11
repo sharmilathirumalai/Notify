@@ -55,13 +55,14 @@
             android:paddingRight="20dp" />
 
         <Switch
-            android:id="@+id/switch2"
+            android:id="@+id/priority"
             android:layout_width="150dp"
             android:layout_height="20dp"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="15dp"
             android:layout_marginRight="20dp"
             android:text="@string/label_priority"
+            android:checked="true"
             android:textSize="18dp"
             android:theme="@style/custom_switch" />
 

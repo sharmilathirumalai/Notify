@@ -2,17 +2,13 @@ package com.example.notify;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.util.Log;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import android.view.MenuItem;
 
-
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "Activity";
 
     MainPage mainPage = new MainPage();
     EventsPage eventsPage = new EventsPage();
