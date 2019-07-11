@@ -22,6 +22,18 @@
         <activity android:name=".SaveEvent"
             android:parentActivityName=".MainActivity">
         </activity>
+
+        <activity android:name=".ExpandNotification"
+            android:parentActivityName=".MainActivity">
+        </activity>
+
+        <receiver android:name=".NotificationReceiver">
+            <intent-filter>
+                <action android:name="notify.NOTIFICATION"/>
+            </intent-filter>
+        </receiver>
+
+
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="ocr" />
