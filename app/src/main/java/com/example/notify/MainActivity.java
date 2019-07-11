@@ -2,19 +2,10 @@ package com.example.notify;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import android.view.MenuItem;
-
-import java.util.Calendar;
-
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "Activity";
@@ -32,18 +23,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
-
-
-        // notification set
-//        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.add(Calendar.SECOND,5);
-//
-//        Intent alarmIntent = new Intent("notify.NOTIFICATION");
-//        Log.d(TAG, "setting alarmManager: ");
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,100, alarmIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//        alarmManager.setExact(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
     }
 
     @Override
