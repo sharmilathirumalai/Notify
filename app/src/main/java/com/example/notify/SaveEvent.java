@@ -1,20 +1,27 @@
 package com.example.notify;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.File;
+import java.io.FileInputStream;
 
 public class SaveEvent extends AppCompatActivity {
 
     public static final String actionType = "ActionType";
     public static final String message = "message";
     public static final String TAG = "SaveEvent";
+    public static final String poster = "Poster";
     private String action;
 
     private EditText eventName,eventLocation,eventDate;
+    private ImageView eventPoster;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +35,7 @@ public class SaveEvent extends AppCompatActivity {
         eventName = findViewById(R.id.event_name);
         eventLocation = findViewById(R.id.event_location);
         eventDate = findViewById(R.id.event_date);
+        eventPoster = findViewById(R.id.event_poster);
 
         if (action.equals("QR")) {
             handleQR(intent);
@@ -51,6 +59,13 @@ public class SaveEvent extends AppCompatActivity {
     // extracts date, location and loads it into input fields
     private void handleOCR(Intent intent) {
         String message = intent.getStringExtra(SaveEvent.message);
+        try {
+            FileInputStream file = new FileInputStream(new File(intent.getStringExtra(SaveEvent.poster)));
+            eventPoster.setImageBitmap(BitmapFactory.decodeStream(file));
+            file.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Log.d(TAG, "message: "+message);
     }
 }
