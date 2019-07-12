@@ -13,11 +13,6 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
-
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -25,17 +20,21 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -186,12 +185,53 @@ public class MainPage extends Fragment {
             try {
                 modifiedPicture = modifyOrientation(picture, getRealImgPath(tempuri));
                 try {
-                    extractText(picture);
+                    String message =  extractText(picture);
+                    if(message != "") {
+                        File pictureFileDir = getDir();
+
+                        if (!pictureFileDir.exists() && !pictureFileDir.mkdirs()) {
+
+                            Log.d(TAG, "Can't create directory to save image.");
+                            Toast.makeText(getActivity(), "Can't create directory to save image.",
+                                    Toast.LENGTH_LONG).show();
+                            return;
+
+                        }
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss");
+                        String date = dateFormat.format(new Date());
+                        String photoFile = "Event_" + date + ".jpg";
+
+                        String filename = pictureFileDir.getPath() + File.separator + photoFile;
+
+                        File pictureFile = new File(filename);
+
+                        try {
+                            FileOutputStream fout = new FileOutputStream(pictureFile);
+                            picture.compress(Bitmap.CompressFormat.PNG, 100, fout);
+                            fout.close();
+
+                            Toast.makeText(getActivity(), "New Image saved:" + photoFile,
+                                    Toast.LENGTH_LONG).show();
+                        } catch (Exception error) {
+                            Log.d(TAG, "File" + filename + "not saved: "
+                                    + error.getMessage());
+                            Toast.makeText(getActivity(), "Image could not be saved.",
+                                    Toast.LENGTH_LONG).show();
+                        }
+
+
+                        // calling new activity to save the extracted information
+                        Intent myIntent = new Intent(getActivity().getApplicationContext(), SaveEvent.class);
+                        myIntent.putExtra(SaveEvent.actionType, actionType);
+                        myIntent.putExtra(SaveEvent.message, message);
+                        myIntent.putExtra(SaveEvent.poster, filename);
+                        startActivity(myIntent);
+                    }
                 } catch (Exception e) {
                     Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
                     Log.d(TAG, "exception: " + e);
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -264,7 +304,7 @@ public class MainPage extends Fragment {
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
-    public void extractText(Bitmap bitmap) {
+    public String extractText(Bitmap bitmap) {
         Context context = getActivity().getApplicationContext();
         TextRecognizer textRecognizer = new TextRecognizer.Builder(getActivity()).build();
         Frame frame = new Frame.Builder().setBitmap(bitmap).build();
@@ -278,22 +318,22 @@ public class MainPage extends Fragment {
                 Toast.makeText(getActivity(), "Insufficient space", Toast.LENGTH_LONG).show();
                 Log.w(TAG, "Insufficient space");
             }
-            return;
+            return "";
         }
 
         SparseArray<TextBlock> items = textRecognizer.detect(frame);
         if (items.size() <= 0) {
-            return;
+            return "";
         }
 
-        setExtractedText(textRecognizer, frame);
 
+        return setExtractedText(textRecognizer, frame);
     }
 
-    private void setExtractedText(TextRecognizer textRecognizer, Frame imgFrame) {
+    private String setExtractedText(TextRecognizer textRecognizer, Frame imgFrame) {
         SparseArray<TextBlock> items = textRecognizer.detect(imgFrame);
         if (items.size() <= 0) {
-            return;
+            return "";
         }
         StringBuilder sb = new StringBuilder("");
 
@@ -305,14 +345,14 @@ public class MainPage extends Fragment {
                 sb.append(" ");
             }
         }
-        //TextView textView = getActivity().findViewById(R.id.text_result);
-//        textView.setText(sb);
 
-        // calling new activity to save the extracted information
-        Intent myIntent = new Intent(getActivity().getApplicationContext(), SaveEvent.class);
-        myIntent.putExtra(SaveEvent.actionType, actionType);
-        myIntent.putExtra(SaveEvent.message, sb + "");
-        startActivity(myIntent);
+        return sb.toString();
+    }
+
+    private File getDir() {
+        File sdDir = Environment
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        return new File(sdDir, "Notify");
     }
 
 }
