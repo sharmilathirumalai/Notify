@@ -17,7 +17,7 @@ public class SaveEvent extends AppCompatActivity {
     public static final String actionType = "ActionType";
     public static final String message = "message";
     public static final String TAG = "SaveEvent";
-    public static final String poster = "Poster";
+    public static final String posterThumbnail = "poster";
     private String action;
 
     private EditText eventName,eventLocation,eventDate;
@@ -59,13 +59,21 @@ public class SaveEvent extends AppCompatActivity {
     // extracts date, location and loads it into input fields
     private void handleOCR(Intent intent) {
         String message = intent.getStringExtra(SaveEvent.message);
+
         try {
-            FileInputStream file = new FileInputStream(new File(intent.getStringExtra(SaveEvent.poster)));
+            FileInputStream file = new FileInputStream(new File(intent.getStringExtra(SaveEvent.posterThumbnail)));
             eventPoster.setImageBitmap(BitmapFactory.decodeStream(file));
             file.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
         Log.d(TAG, "message: "+message);
+    }
+
+    private void setExtractedText(String message) {
+        String[] messageArray = message.split("::");
+        eventDate.setText(messageArray[0]);
+        eventLocation.setText(messageArray[1]);
+        Log.d(TAG, "messageArray: "+messageArray);
     }
 }

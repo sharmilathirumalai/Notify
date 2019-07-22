@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".MainPage">
 
+
     <!--<LinearLayout-->
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="match_parent"-->
@@ -42,22 +43,23 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/wrapper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
         <!--<TextView-->
-            <!--android:id="@+id/textview"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="65dp"-->
-            <!--android:padding="7dp"-->
-            <!--android:text="Notify"-->
-            <!--android:textColor="@color/colorAccent"-->
-            <!--android:textSize="40dp"-->
-            <!--app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--app:layout_constraintLeft_toLeftOf="parent"-->
-            <!--app:layout_constraintRight_toRightOf="parent"-->
-            <!--app:layout_constraintTop_toTopOf="parent" />-->
+        <!--android:id="@+id/textview"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="65dp"-->
+        <!--android:padding="7dp"-->
+        <!--android:text="Notify"-->
+        <!--android:textColor="@color/colorAccent"-->
+        <!--android:textSize="40dp"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
 
         <ImageButton
             android:id="@+id/launch_camera"
@@ -94,6 +96,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/textView_events">
+
             <TextView
                 android:id="@+id/textView_date"
                 android:layout_width="match_parent"
@@ -124,45 +127,54 @@
         </RelativeLayout>
 
         <!--<android.support.v7.widget.CardView-->
-            <!--android:id="@+id/card_view"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="206dp"-->
-            <!--android:layout_below="@id/textView_events"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--app:cardBackgroundColor="@color/colorPrimary"-->
-            <!--card_view:cardCornerRadius="4dp">-->
+        <!--android:id="@+id/card_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="206dp"-->
+        <!--android:layout_below="@id/textView_events"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--app:cardBackgroundColor="@color/colorPrimary"-->
+        <!--card_view:cardCornerRadius="4dp">-->
 
-            <!--<TextView-->
-                <!--android:id="@+id/textView_date"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="55dp"-->
-                <!--android:text="TextView"-->
-                <!--android:textSize="30dp" />-->
+        <!--<TextView-->
+        <!--android:id="@+id/textView_date"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="55dp"-->
+        <!--android:text="TextView"-->
+        <!--android:textSize="30dp" />-->
 
-            <!--<ImageView-->
-                <!--android:id="@+id/imageView2"-->
-                <!--android:layout_width="148dp"-->
-                <!--android:layout_height="154dp"-->
-                <!--android:layout_alignStart="@+id/card_view"-->
-                <!--android:layout_marginTop="52dp"-->
-                <!--android:scaleType="centerCrop"-->
-                <!--android:src="@drawable/" />-->
+        <!--<ImageView-->
+        <!--android:id="@+id/imageView2"-->
+        <!--android:layout_width="148dp"-->
+        <!--android:layout_height="154dp"-->
+        <!--android:layout_alignStart="@+id/card_view"-->
+        <!--android:layout_marginTop="52dp"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:src="@drawable/" />-->
 
-            <!--<TextView-->
-                <!--android:id="@+id/textView_info"-->
-                <!--android:layout_width="257dp"-->
-                <!--android:layout_height="149dp"-->
-                <!--android:layout_alignEnd="@+id/card_view"-->
-                <!--android:layout_marginLeft="150dp"-->
-                <!--android:layout_marginTop="52dp"-->
-                <!--android:text="TextView"-->
-                <!--android:textAlignment="center"-->
-                <!--android:textColor="@color/colorPrimary"-->
-                <!--android:textSize="20dp" />-->
+        <!--<TextView-->
+        <!--android:id="@+id/textView_info"-->
+        <!--android:layout_width="257dp"-->
+        <!--android:layout_height="149dp"-->
+        <!--android:layout_alignEnd="@+id/card_view"-->
+        <!--android:layout_marginLeft="150dp"-->
+        <!--android:layout_marginTop="52dp"-->
+        <!--android:text="TextView"-->
+        <!--android:textAlignment="center"-->
+        <!--android:textColor="@color/colorPrimary"-->
+        <!--android:textSize="20dp" />-->
 
         <!--</android.support.v7.widget.CardView>-->
     </RelativeLayout>
 
+    <ProgressBar
+        android:id="@+id/progress_circular"
+        style="@android:style/Widget.Holo.ProgressBar.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/primary_red"
+        android:progressTint="@color/primary_red"
+        android:visibility="gone" />
 
 </FrameLayout>

@@ -3,25 +3,20 @@ package com.example.notify;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,12 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.vision.Frame;
-import com.google.android.gms.vision.text.TextBlock;
-import com.google.android.gms.vision.text.TextRecognizer;
-
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -48,8 +38,10 @@ public class MainPage extends Fragment {
     private static final String TAG = "MainPage";
     private static final int CAMERA_PERMISSION_CODE = 100;
     private static final int CAMERA_PERMISSION_REQUEST = 1888;
-    //private ImageView posterImg;
     private String mCurrentPhotoPath;
+    private ProgressBar loading;
+    private RelativeLayout wrapper;
+
     public static final String actionType = "OCR";
 
     public MainPage() {
@@ -64,9 +56,10 @@ public class MainPage extends Fragment {
 
 
         ImageButton launchCamera = view.findViewById(R.id.launch_camera);
-        //posterImg = view.findViewById(R.id.poster_view);
-
         ImageButton launchQR = view.findViewById(R.id.launch_qrscanner);
+        loading = view.findViewById(R.id.progress_circular);
+        wrapper = view.findViewById(R.id.wrapper);
+
 
         final Activity mActivity = getActivity();
 
@@ -135,21 +128,6 @@ public class MainPage extends Fragment {
     }
 
 
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
 
 
     @Override
@@ -169,190 +147,89 @@ public class MainPage extends Fragment {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_PERMISSION_REQUEST && resultCode == Activity.RESULT_OK) {
-//            Bitmap picture =  (Bitmap) data.getExtras().get("data");
+
+            loading.setVisibility(View.VISIBLE);
+            wrapper.setAlpha(0.1f);
+            for (int i = 0; i < wrapper.getChildCount(); i++) {
+                View child = wrapper.getChildAt(i);
+                child.setEnabled(false);
+            }
+
             File file = new File(mCurrentPhotoPath);
             Bitmap picture = null;
+
             try {
                 picture = MediaStore.Images.Media
                         .getBitmap(getActivity().getContentResolver(), Uri.fromFile(file));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Bitmap modifiedPicture = null;
-            Uri tempuri = data.getData();
-            //posterImg.setImageBitmap(picture);
+            final Intent myIntent = new Intent(getActivity().getApplicationContext(), SaveEvent.class);
+            myIntent.putExtra(SaveEvent.actionType, actionType);
 
-            try {
-                modifiedPicture = modifyOrientation(picture, getRealImgPath(tempuri));
-                try {
-                    String message =  extractText(picture);
-                    if(message != "") {
-                        File pictureFileDir = getDir();
+            final Boolean[] isSaveimgCompleted = {false};
+            final Boolean[] isParserCompleted = {false};
 
-                        if (!pictureFileDir.exists() && !pictureFileDir.mkdirs()) {
-
-                            Log.d(TAG, "Can't create directory to save image.");
-                            Toast.makeText(getActivity(), "Can't create directory to save image.",
-                                    Toast.LENGTH_LONG).show();
-                            return;
-
-                        }
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss");
-                        String date = dateFormat.format(new Date());
-                        String photoFile = "Event_" + date + ".jpg";
-
-                        String filename = pictureFileDir.getPath() + File.separator + photoFile;
-
-                        File pictureFile = new File(filename);
-
-                        try {
-                            FileOutputStream fout = new FileOutputStream(pictureFile);
-                            picture.compress(Bitmap.CompressFormat.PNG, 100, fout);
-                            fout.close();
-
-                            Toast.makeText(getActivity(), "New Image saved:" + photoFile,
-                                    Toast.LENGTH_LONG).show();
-                        } catch (Exception error) {
-                            Log.d(TAG, "File" + filename + "not saved: "
-                                    + error.getMessage());
-                            Toast.makeText(getActivity(), "Image could not be saved.",
-                                    Toast.LENGTH_LONG).show();
-                        }
-
-
-                        // calling new activity to save the extracted information
-                        Intent myIntent = new Intent(getActivity().getApplicationContext(), SaveEvent.class);
-                        myIntent.putExtra(SaveEvent.actionType, actionType);
-                        myIntent.putExtra(SaveEvent.message, message);
-                        myIntent.putExtra(SaveEvent.poster, filename);
+            new SaveImage(getContext(), new AsyncResponse() {
+                @Override
+                public void processFinish(Object... objects) {
+                    // calling Edit page activity with the save image
+                    myIntent.putExtra(SaveEvent.posterThumbnail, (String) objects[0]);
+                    isSaveimgCompleted[0] = true;
+                    if(isParserCompleted[0] == true) {
                         startActivity(myIntent);
+                        loading.setVisibility(View.INVISIBLE);
+                        for (int i = 0; i < wrapper.getChildCount(); i++) {
+                            View child = wrapper.getChildAt(i);
+                            child.setEnabled(true);
+                        }
+                        wrapper.setAlpha(1.0f);
                     }
-                } catch (Exception e) {
-                    Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
-                    Log.d(TAG, "exception: " + e);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                }).execute(picture);
 
+            new OCRParser(getActivity(),  new AsyncResponse() {
+                @Override
+                public void processFinish(Object... objects) {
+                    // calling Edit page activity with the save image
+                    myIntent.putExtra(SaveEvent.message, (String) objects[0]);
+                    isParserCompleted[0] = true;
 
-        }
-    }
-
-
-    public Bitmap modifyOrientation(Bitmap bitmap, String imgPath) throws IOException {
-
-        ExifInterface ei = new ExifInterface(imgPath);
-        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-
-        switch (orientation) {
-            case ExifInterface.ORIENTATION_ROTATE_90:
-                return rotate(bitmap, 90);
-
-            case ExifInterface.ORIENTATION_ROTATE_180:
-                return rotate(bitmap, 180);
-
-            case ExifInterface.ORIENTATION_ROTATE_270:
-                return rotate(bitmap, 270);
-
-            case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
-                return flip(bitmap, true, false);
-
-            case ExifInterface.ORIENTATION_FLIP_VERTICAL:
-                return flip(bitmap, false, true);
-
-            default:
-                return bitmap;
-        }
-    }
-
-    public String getRealImgPath(Uri uri) {
-        String[] largeFileProjection = {MediaStore.Images.ImageColumns._ID,
-                MediaStore.Images.ImageColumns.DATA};
-        String largeFileSort = MediaStore.Images.ImageColumns._ID + " DESC";
-        Cursor myCursor = getActivity().getContentResolver().query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                largeFileProjection, null, null, largeFileSort);
-        String largeImagePath = "";
-        try {
-            myCursor.moveToFirst();
-            largeImagePath = myCursor
-                    .getString(myCursor
-                            .getColumnIndexOrThrow(MediaStore.Images.ImageColumns.DATA));
-        } finally {
-            try {
-                if (!myCursor.isClosed()) {
-                    myCursor.close();
+                    if(isSaveimgCompleted[0] == true) {
+                        startActivity(myIntent);
+                        loading.setVisibility(View.INVISIBLE);
+                        for (int i = 0; i < wrapper.getChildCount(); i++) {
+                            View child = wrapper.getChildAt(i);
+                            child.setEnabled(true);
+                        }
+                        wrapper.setAlpha(1.0f);
+                    }
                 }
-                myCursor = null;
-            } catch (Exception e) {
-                Log.e("While closing cursor", e.getMessage());
-            }
+            }).execute(picture, data.getData());
+
+
         }
-        return largeImagePath;
     }
 
-    public static Bitmap rotate(Bitmap bitmap, float degrees) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(degrees);
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
     }
 
-    public static Bitmap flip(Bitmap bitmap, boolean horizontal, boolean vertical) {
-        Matrix matrix = new Matrix();
-        matrix.preScale(horizontal ? -1 : 1, vertical ? -1 : 1);
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-    }
-
-    public String extractText(Bitmap bitmap) {
-        Context context = getActivity().getApplicationContext();
-        TextRecognizer textRecognizer = new TextRecognizer.Builder(getActivity()).build();
-        Frame frame = new Frame.Builder().setBitmap(bitmap).build();
-        if (!textRecognizer.isOperational()) {
-            Log.w(TAG, "Detector dependencies are not yet available.");
-
-            IntentFilter isNoSpace = new IntentFilter(Intent.ACTION_DEVICE_STORAGE_LOW);
-            boolean hasLowStorage = getActivity().registerReceiver(null, isNoSpace) != null;
-
-            if (hasLowStorage) {
-                Toast.makeText(getActivity(), "Insufficient space", Toast.LENGTH_LONG).show();
-                Log.w(TAG, "Insufficient space");
-            }
-            return "";
-        }
-
-        SparseArray<TextBlock> items = textRecognizer.detect(frame);
-        if (items.size() <= 0) {
-            return "";
-        }
 
 
-        return setExtractedText(textRecognizer, frame);
-    }
 
-    private String setExtractedText(TextRecognizer textRecognizer, Frame imgFrame) {
-        SparseArray<TextBlock> items = textRecognizer.detect(imgFrame);
-        if (items.size() <= 0) {
-            return "";
-        }
-        StringBuilder sb = new StringBuilder("");
-
-        for (int i = 0; i < items.size(); ++i) {
-            TextBlock item = items.get(items.keyAt(i));
-            if (item != null && item.getValue() != null) {
-                Log.d("Processor", "Text detected! " + item.getValue());
-                sb.append(item.getValue());
-                sb.append(" ");
-            }
-        }
-
-        return sb.toString();
-    }
-
-    private File getDir() {
-        File sdDir = Environment
-                .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        return new File(sdDir, "Notify");
-    }
 
 }
