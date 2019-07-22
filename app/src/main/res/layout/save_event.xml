@@ -23,10 +23,12 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="15dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/input_box"
+
             android:inputType="text"
             android:paddingLeft="20dp"
             android:paddingRight="20dp" />
+
+        <!--android:background="@drawable/input_box"-->
 
         <EditText
             android:id="@+id/event_location"
@@ -35,7 +37,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="15dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/input_box"
+
             android:drawableRight="@drawable/ic_location_icon"
             android:inputType="text"
             android:paddingLeft="20dp"
@@ -48,7 +50,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="15dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/input_box"
+
             android:drawableRight="@drawable/ic_calendar"
             android:inputType="date"
             android:paddingLeft="20dp"

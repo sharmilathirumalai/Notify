@@ -13,4 +13,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello main page fragment</string>
+    <string name="description_ocr">Scan poster</string>
+    <string name="description_qrscanner">Scan QR</string>
 </resources>
