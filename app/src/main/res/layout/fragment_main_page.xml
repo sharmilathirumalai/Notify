@@ -5,40 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".MainPage">
 
-
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:orientation="vertical">-->
-
-    <!--<Button-->
-    <!--android:id="@+id/launch_camera"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="50dp"-->
-    <!--android:text="@string/open_camera" />-->
-
-    <!--<Button-->
-    <!--android:id="@+id/launch_qrscanner"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="50dp"-->
-    <!--android:text="QR" />-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/text_result"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="0dp"-->
-    <!--android:layout_weight="1"-->
-    <!--android:gravity="center"-->
-    <!--android:textSize="18sp" />-->
-
-    <!--<ImageView-->
-    <!--android:id="@+id/poster_view"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="0dp" />-->
-
-    <!--</LinearLayout>-->
-
-
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -47,19 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
-
-        <!--<TextView-->
-        <!--android:id="@+id/textview"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="65dp"-->
-        <!--android:padding="7dp"-->
-        <!--android:text="Notify"-->
-        <!--android:textColor="@color/colorAccent"-->
-        <!--android:textSize="40dp"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintLeft_toLeftOf="parent"-->
-        <!--app:layout_constraintRight_toRightOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent" />-->
 
         <ImageButton
             android:id="@+id/launch_camera"
@@ -89,7 +42,7 @@
             android:padding="7dp"
             android:text="Upcoming Events"
             android:textColor="@color/primary_red"
-            android:textSize="30dp" />
+            android:textSize="20sp" />
 
         <RelativeLayout
             android:id="@+id/upcoming_event"
@@ -101,17 +54,32 @@
                 android:id="@+id/textView_date"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
+                android:padding="10dp"
+                android:background="@drawable/circle_thumbnail"
                 android:text="TextView"
-                android:textSize="30dp" />
+                android:textSize="20sp" />
 
-            <ImageView
+            <!--<ImageView-->
+                <!--android:id="@+id/imageView2"-->
+                <!--android:layout_width="148dp"-->
+                <!--android:layout_height="154dp"-->
+                <!--android:layout_alignStart="@+id/textView_date"-->
+                <!--android:layout_marginTop="52dp"-->
+                <!--android:scaleType="centerCrop"-->
+                <!--android:src="@drawable/ic_photo_frame" />-->
+
+
+            <com.mikhaellopez.circularimageview.CircularImageView
                 android:id="@+id/imageView2"
-                android:layout_width="148dp"
-                android:layout_height="154dp"
-                android:layout_alignStart="@+id/textView_date"
-                android:layout_marginTop="52dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_photo_frame" />
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:src="@drawable/ic_photo_frame"
+                app:civ_border_color="#EEEEEE"
+                app:civ_border_width="4dp"
+                app:civ_shadow="true"
+                app:civ_shadow_radius="10"
+                android:layout_marginTop="55dp"
+                app:civ_shadow_color="#8BC34A"/>
 
             <TextView
                 android:id="@+id/textView_info"
