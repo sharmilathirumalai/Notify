@@ -47,7 +47,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         // add icon if necessary
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "");
-        Notification notification = builder.setContentTitle(notification_title).setContentText(notification_body).setTicker("Event Alert").setAutoCancel(true).setSmallIcon(R.drawable.ic_settings_icon).setContentIntent(pendingIntent).build();
+        Notification notification = builder.setContentTitle(notification_title).setContentText(notification_body).setTicker("Event Alert").setAutoCancel(false).setSmallIcon(R.drawable.ic_settings_icon).setContentIntent(pendingIntent).build();
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0, notification);
 

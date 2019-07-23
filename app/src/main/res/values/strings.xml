@@ -11,6 +11,11 @@
     <string name="label_event_name">Event name</string>
     <string name="label_priority">Priority</string>
 
+    <string name="label_shortcut_long_qr">Scan QR Code</string>
+    <string name="label_shortcut_short_qr">QR</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello main page fragment</string>
+    <string name="event_notification_header">You have an event notification</string>
+    <string name="shortcut_disabled_message">Shortcuts are available after Android 7.0</string>
 </resources>
