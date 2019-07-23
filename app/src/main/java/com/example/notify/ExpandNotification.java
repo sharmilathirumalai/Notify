@@ -1,11 +1,11 @@
 package com.example.notify;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class ExpandNotification extends Activity {
+public class ExpandNotification extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

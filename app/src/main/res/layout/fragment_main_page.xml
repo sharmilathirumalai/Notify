@@ -20,8 +20,11 @@
             android:layout_height="255dp"
             android:layout_marginLeft="2dp"
             android:layout_marginTop="9dp"
+            android:adjustViewBounds="true"
+            android:backgroundTint="@color/white"
+            android:padding="3dp"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_icon_camera" />
+            android:src="@drawable/event_scan_1" />
 
         <ImageButton
             android:id="@+id/launch_qrscanner"
@@ -30,8 +33,12 @@
             android:layout_alignParentRight="true"
             android:layout_marginTop="9dp"
             android:layout_marginRight="2dp"
+            android:adjustViewBounds="true"
+            android:backgroundTint="@color/white"
+            android:padding="3dp"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_icon_qr_code" />
+            android:src="@drawable/qr_scan" />
+        <!--android:background="?attr/selectableItemBackgroundBorderless"-->
 
         <TextView
             android:id="@+id/textView_events"

@@ -32,9 +32,6 @@
         <activity android:name=".ExpandNotification"
             android:parentActivityName=".MainActivity">
         </activity>
-
-        <!--<receiver android:process=":remote" android:name=".AlarmReceiver"></receiver>-->
-
         <receiver android:name=".NotificationReceiver">
             <intent-filter>
                 <action android:name="notify.NOTIFICATION"/>
