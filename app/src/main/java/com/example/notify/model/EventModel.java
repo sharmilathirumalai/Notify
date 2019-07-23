@@ -1,29 +1,48 @@
 package com.example.notify.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class EventModel {
     private long id;
     private String event_name;
-    private String event_date;
+    private Date event_date;
     private String event_location;
-    private String event_poster;
+    private String event_poster = "";
 
     public EventModel(String event_name, String event_date, String event_location) {
         this.event_name = event_name;
-        this.event_date = event_date;
+        try {
+            this.event_date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(event_date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         this.event_location = event_location;
     }
 
     public EventModel(long id, String event_name, String event_date, String event_location) {
         this.id = id;
         this.event_name = event_name;
-        this.event_date = event_date;
+        try {
+            Date date = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy").parse(event_date);
+            String datestr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
+
+            this.event_date =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(datestr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         this.event_location = event_location;
     }
 
-    public EventModel(long id, String event_name, String event_date, String event_location, String event_poster) {
+    public EventModel(String event_name, String event_date, String event_location, String event_poster) {
         this.id = id;
         this.event_name = event_name;
-        this.event_date = event_date;
+        try {
+            this.event_date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(event_date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         this.event_location = event_location;
         this.event_poster = event_poster;
     }
@@ -33,7 +52,7 @@ public class EventModel {
         return id;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return event_date;
     }
 
@@ -44,6 +63,7 @@ public class EventModel {
     public String getName() {
         return event_name;
     }
+
     public String getposter() {
         return event_poster;
     }
@@ -53,7 +73,11 @@ public class EventModel {
     }
 
     public void setDate(String event_date) {
-        this.event_date = event_date;
+        try {
+            this.event_date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(event_date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setName(String event_name) {

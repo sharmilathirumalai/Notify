@@ -24,6 +24,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import com.example.notify.db.EventDataQueries;
+import com.example.notify.model.EventModel;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -102,6 +105,11 @@ public class MainPage extends Fragment {
         if (!checkPermissions()) {
             requestPermissions();
         }
+
+        EventDataQueries database = new EventDataQueries(getContext());
+        database.open();
+        List<EventModel> upcomingevents = database.getUpcomingEvents();
+        database.close();
 
         return view;
     }
