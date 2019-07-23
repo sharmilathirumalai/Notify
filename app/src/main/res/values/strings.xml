@@ -11,8 +11,10 @@
     <string name="label_event_name">Event name</string>
     <string name="label_priority">Priority</string>
 
-    <string name="label_shortcut_long_qr">Scan QR Code</string>
+    <string name="label_shortcut_long_qr">QR code</string>
+    <string name="label_shortcut_long_ocr">Event poster</string>
     <string name="label_shortcut_short_qr">QR</string>
+    <string name="label_shortcut_short_ocr">Poster</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello main page fragment</string>
