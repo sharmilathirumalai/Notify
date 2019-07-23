@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,31 +19,36 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * The home screen {@MainPage Fragment} subclass.
  */
 public class MainPage extends Fragment {
 
     private static final String TAG = "MainPage";
-    private static final int CAMERA_PERMISSION_CODE = 100;
+    private static final int PERMISSION_CODE = 100;
     private static final int CAMERA_PERMISSION_REQUEST = 1888;
+    private static final int WRITE_PERMISSION_REQUEST = 1024;
+    public static final String actionType = "OCR";
+
+    List<String> permissionsList = new ArrayList<>();
+
     private String mCurrentPhotoPath;
     private ProgressBar loading;
     private RelativeLayout wrapper;
 
-    public static final String actionType = "OCR";
 
     public MainPage() {
         // Required empty public constructor
@@ -61,8 +67,6 @@ public class MainPage extends Fragment {
         wrapper = view.findViewById(R.id.wrapper);
 
 
-        final Activity mActivity = getActivity();
-
         launchQR.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -75,33 +79,17 @@ public class MainPage extends Fragment {
         launchCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getActivity().checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions(new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
-
+                if (!checkPermissions()) {
+                    requestPermissions();
                 } else {
-                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    File photoFile = null;
-                    try {
-                        photoFile = createImageFile();
-                    } catch (IOException ex) {
-                    }
-
-                    // Continue only if the File was successfully created
-                    if (photoFile != null) {
-                        Uri photoURI = FileProvider.getUriForFile(mActivity,
-                                "com.example.notify.provider",
-                                photoFile);
-                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                        startActivityForResult(cameraIntent, CAMERA_PERMISSION_REQUEST);
-                    }
+                    launchCameraActivity();
                 }
+
             }
         });
 
 
-        ImageView image;
-
-        image = view.findViewById(R.id.imageView2);
+        ImageView image = view.findViewById(R.id.imageView2);
         setImage(image);
 
         TextView dateview = view.findViewById(R.id.textView_date);
@@ -110,7 +98,30 @@ public class MainPage extends Fragment {
         TextView info = view.findViewById(R.id.textView_info);
         setinfo(info);
 
+        if (!checkPermissions()) {
+            requestPermissions();
+        }
+
         return view;
+    }
+
+    private void launchCameraActivity() {
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        File photoFile = null;
+        try {
+            photoFile = createImageFile();
+        } catch (IOException ex) {
+            Log.d(TAG, ex.getMessage());
+        }
+
+        // Continue only if the File was successfully created
+        if (photoFile != null) {
+            Uri photoURI = FileProvider.getUriForFile(getActivity(),
+                    "com.example.notify.provider",
+                    photoFile);
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+            startActivity(cameraIntent);
+        }
     }
 
     private void setDate(TextView view) {
@@ -128,26 +139,50 @@ public class MainPage extends Fragment {
     }
 
 
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == CAMERA_PERMISSION_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(getActivity(), getResources().getString(R.string.camera_permission_granted), Toast.LENGTH_LONG).show();
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_PERMISSION_REQUEST);
-            } else {
-                Toast.makeText(getActivity(), getResources().getString(R.string.camera_permission_deined), Toast.LENGTH_LONG).show();
+    private boolean checkPermissions() {
+        /*
+         * Request permissions, so that we can get the camera & storage
+         * access. The result of the permission request is handled by a callback,
+         * onRequestPermissionsResult.
+         */
+        int str = getActivity().checkSelfPermission(Manifest.permission.CAMERA);
+        int str1 = PackageManager.PERMISSION_GRANTED;
+        if (getActivity().checkSelfPermission(android.Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            if(!permissionsList.contains(Manifest.permission.CAMERA)) {
+                permissionsList.add(Manifest.permission.CAMERA);
             }
+        } else {
+            permissionsList.remove(Manifest.permission.CAMERA);
+        }
+        if (getActivity().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if(!permissionsList.contains(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                permissionsList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
+
+        } else {
+            permissionsList.remove(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
 
+        if (permissionsList.size() != 0) {
+            return false;
+        }
+
+        return true;
     }
+
+    private void requestPermissions() {
+        if (permissionsList.size() != 0) {
+            ActivityCompat.requestPermissions(getActivity(), permissionsList.toArray(new String[permissionsList.size()]),
+                    PERMISSION_CODE);
+            checkPermissions();
+        }
+    }
+
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_PERMISSION_REQUEST && resultCode == Activity.RESULT_OK) {
-
             loading.setVisibility(View.VISIBLE);
             wrapper.setAlpha(0.1f);
             for (int i = 0; i < wrapper.getChildCount(); i++) {
@@ -176,7 +211,7 @@ public class MainPage extends Fragment {
                     // calling Edit page activity with the save image
                     myIntent.putExtra(SaveEvent.posterThumbnail, (String) objects[0]);
                     isSaveimgCompleted[0] = true;
-                    if(isParserCompleted[0] == true) {
+                    if (isParserCompleted[0] == true) {
                         startActivity(myIntent);
                         loading.setVisibility(View.INVISIBLE);
                         for (int i = 0; i < wrapper.getChildCount(); i++) {
@@ -186,16 +221,16 @@ public class MainPage extends Fragment {
                         wrapper.setAlpha(1.0f);
                     }
                 }
-                }).execute(picture);
+            }).execute(picture);
 
-            new OCRParser(getActivity(),  new AsyncResponse() {
+            new OCRParser(getActivity(), new AsyncResponse() {
                 @Override
                 public void processFinish(Object... objects) {
                     // calling Edit page activity with the save image
                     myIntent.putExtra(SaveEvent.message, (String) objects[0]);
                     isParserCompleted[0] = true;
 
-                    if(isSaveimgCompleted[0] == true) {
+                    if (isSaveimgCompleted[0] == true) {
                         startActivity(myIntent);
                         loading.setVisibility(View.INVISIBLE);
                         for (int i = 0; i < wrapper.getChildCount(); i++) {
@@ -227,9 +262,6 @@ public class MainPage extends Fragment {
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
-
-
-
 
 
 }
