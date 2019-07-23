@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.notify.db.EventDataQueries;
 import com.example.notify.model.EventModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.Parser;
 
@@ -42,6 +43,7 @@ public class SaveEvent extends AppCompatActivity {
     private EditText eventName,eventLocation,eventDate;
     private ImageView eventPoster;
     private Button savebtn;
+    private FloatingActionButton sharebtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +61,10 @@ public class SaveEvent extends AppCompatActivity {
         eventDate = findViewById(R.id.event_date);
         eventPoster = findViewById(R.id.event_poster);
         savebtn = findViewById(R.id.save_btn);
+        sharebtn = findViewById(R.id.share_btn);
 
          if(id !=null) {
-             eventID =Long.parseLong(id);
+             eventID = Long.parseLong(id);
              eventName.setText(intent.getStringExtra(SaveEvent.EventName));
              eventLocation.setText(intent.getStringExtra(SaveEvent.EventLocation));
              eventDate.setText(intent.getStringExtra(SaveEvent.EventDate));
@@ -85,7 +88,6 @@ public class SaveEvent extends AppCompatActivity {
 
 
         savebtn.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 EventDataQueries database = new EventDataQueries(getApplicationContext());
@@ -106,6 +108,28 @@ public class SaveEvent extends AppCompatActivity {
             }
             });
 
+        sharebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareEvent();
+            }
+        });
+
+    }
+
+    private void shareEvent() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        String message = eventName.getText() + "\n" + "Date: " + eventDate.getText();
+        intent.putExtra(Intent.EXTRA_SUBJECT, eventName.getText());
+        intent.putExtra(Intent.EXTRA_TEXT, message);
+        intent.setType("text/plain");
+        if(imagepath != "") {
+            intent.putExtra(Intent.EXTRA_STREAM, imagepath);
+
+            intent.setType("image/jpeg");
+        }
+        startActivity(Intent.createChooser(intent, getResources().getString(R.string.share_using)));
     }
 
     // this method reads the decoded QR text and loads it into the ui input fields

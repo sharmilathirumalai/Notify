@@ -111,6 +111,8 @@ public class MainPage extends Fragment {
         List<EventModel> upcomingevents = database.getUpcomingEvents();
         database.close();
 
+
+
         return view;
     }
 

@@ -40,12 +40,12 @@ public class QrScanner extends AppCompatActivity implements ZXingScannerView.Res
         String message = result.getText();
 
 
-//        if(getIntent().getStringExtra("FromActivityTAG") != null) {
-//            Intent myIntent = new Intent(getApplicationContext(), SaveEvent.class);
-//            myIntent.putExtra(SaveEvent.actionType, actionType);
-//            myIntent.putExtra(SaveEvent.message, result.getText());
-//            startActivity(myIntent);
-//        } else {
+        if(getIntent().getStringExtra("FromActivityTAG") != null) {
+            Intent myIntent = new Intent(getApplicationContext(), SaveEvent.class);
+            myIntent.putExtra(SaveEvent.actionType, actionType);
+            myIntent.putExtra(SaveEvent.message, result.getText());
+            startActivity(myIntent);
+        } else {
             String[] messageArray = message.split("::");
             // these data has to be stored in local
             // todo
@@ -91,7 +91,7 @@ public class QrScanner extends AppCompatActivity implements ZXingScannerView.Res
             } catch (Exception e) {
                 Toast.makeText(this, "Some error occurred while reading the QR", Toast.LENGTH_LONG).show();
             }
-//        }
+        }
 
     }
 }

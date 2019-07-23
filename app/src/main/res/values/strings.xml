@@ -16,6 +16,9 @@
     <string name="label_shortcut_short_qr">QR</string>
     <string name="label_shortcut_short_ocr">Poster</string>
 
+    <string name="share_using">Share Via</string>
+    <string name="save">Save</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello main page fragment</string>
     <string name="event_notification_header">You have an event notification</string>
