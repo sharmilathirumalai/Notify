@@ -17,6 +17,7 @@ import androidx.core.app.NotificationCompat;
 
 public class NotificationReceiver extends BroadcastReceiver {
     private static final String TAG = "Activity";
+
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "onReceive: ");
@@ -30,25 +31,41 @@ public class NotificationReceiver extends BroadcastReceiver {
             context.startService(new Intent(context, ExpandNotification.class));
         }
 
+        String event_name = intent.getStringExtra("name");
+        String event_location = intent.getStringExtra("location");
+        String event_date = intent.getStringExtra("date");
+
         // create intent to be passed to next class when user clicks on the notification
         Intent notificationIntent = new Intent(context, ExpandNotification.class);
+        notificationIntent.putExtra("location",event_location);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addParentStack(ExpandNotification.class);
         stackBuilder.addNextIntent(notificationIntent);
         Log.d(TAG, "NotificationReceiver: ");
         PendingIntent pendingIntent = stackBuilder.getPendingIntent(100, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        String event_name = intent.getStringExtra("name");
-        String event_location = intent.getStringExtra("location");
-        String event_date = intent.getStringExtra("date");
+
+
+        // intent for notification action
+//        Intent intentAction = new Intent(context, ProvideNavigation.class);
+//        intentAction.putExtra("action", "actionName");
+//
+//        TaskStackBuilder stackBuilder1 = TaskStackBuilder.create(context);
+//        stackBuilder1.addParentStack(ProvideNavigation.class);
+//        stackBuilder1.addNextIntent(intentAction);
+//        Log.d(TAG, "NotificationReceiver: ");
+//        PendingIntent actionPendingIntent = stackBuilder.getPendingIntent(100, PendingIntent.FLAG_UPDATE_CURRENT);
+//        PendingIntent actionPendingIntent = PendingIntent.getActivity(context,0,intentAction,0);
+
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "");
         builder.setContentTitle(event_name);
-        builder.setContentText(event_location+" "+event_date);
+        builder.setContentText(event_location + " " + event_date);
         builder.setTicker("Event Alert");
         builder.setAutoCancel(false);
-        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setSmallIcon(R.drawable.notification_icon);
         builder.setContentIntent(pendingIntent);
+//        builder.addAction(R.drawable.ic_location_icon, "Show .navigation", actionPendingIntent);
         Notification notification = builder.build();
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0, notification);
@@ -56,17 +73,17 @@ public class NotificationReceiver extends BroadcastReceiver {
     }
 
 
-    public void setAlarm(Context context, long time){
+    public void setAlarm(Context context, long time) {
         Log.d(TAG, "setAlarm: ");
-        AlarmManager alarmManager =( AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, NotificationReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, 2000, pendingIntent);
     }
 
-    public void setAlarm(Context context, long time, Intent intent){
+    public void setAlarm(Context context, long time, Intent intent) {
         Log.d(TAG, "setAlarm: ");
-        AlarmManager alarmManager =( AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 //        Intent intent = new Intent(context, NotificationReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, 2000, pendingIntent);
