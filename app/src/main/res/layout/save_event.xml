@@ -71,6 +71,7 @@
         <Button
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:id="@+id/save_btn"
             android:layout_gravity="right|bottom"
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"

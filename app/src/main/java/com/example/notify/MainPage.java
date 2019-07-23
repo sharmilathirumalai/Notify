@@ -72,6 +72,7 @@ public class MainPage extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(getActivity().getApplicationContext(), QrScanner.class);
+                myIntent.putExtra("FromActivityTAG", TAG);
                 startActivity(myIntent);
             }
         });
@@ -120,7 +121,7 @@ public class MainPage extends Fragment {
                     "com.example.notify.provider",
                     photoFile);
             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-            startActivity(cameraIntent);
+            startActivityForResult(cameraIntent, CAMERA_PERMISSION_REQUEST);
         }
     }
 
