@@ -9,6 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.zxing.Result;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class QrScanner extends AppCompatActivity implements ZXingScannerView.ResultHandler {
@@ -30,9 +34,37 @@ public class QrScanner extends AppCompatActivity implements ZXingScannerView.Res
     @Override
     public void handleResult(Result result) {
         Log.d(TAG, "handleResult: " + result.getText());
-        Intent myIntent = new Intent(getApplicationContext(), SaveEvent.class);
-        myIntent.putExtra(SaveEvent.actionType, actionType);
-        myIntent.putExtra(SaveEvent.message, result.getText());
-        startActivity(myIntent);
+        String message = result.getText();
+        String[] messageArray = message.split("::");
+        // these data has to be stored in local
+        // todo
+        String eventDateString = messageArray[1];
+        String eventLocation = messageArray[2];
+        String eventName = messageArray[0];
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        try {
+            Date eventDate = format.parse(eventDateString);
+            Date currentTime = Calendar.getInstance().getTime();
+            long difference = eventDate.getTime() - currentTime.getTime();
+            Log.d(TAG, "eventDate: " + eventDate);
+            Log.d(TAG, "currentTime: " + currentTime);
+            Log.d(TAG, "difference: " + difference);
+            NotificationReceiver alarm = new NotificationReceiver();
+            // todo change the time parameter.
+            // todo. store the details in local storage. with that id, create an intent and push it to alarmManager
+            alarm.setAlarm(this, 2000);
+
+            Toast.makeText(this, "Saved successfully", Toast.LENGTH_LONG).show();
+            Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(myIntent);
+        } catch (Exception e) {
+            Toast.makeText(this, "Some error occurred while reading the QR", Toast.LENGTH_LONG).show();
+        }
+
+//        eventName.setText(messageArray[0]);
+//        eventLocation.setText(messageArray[2]);
+//        eventDate.setText(messageArray[1]);
+
     }
 }

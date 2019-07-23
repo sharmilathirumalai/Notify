@@ -27,6 +27,8 @@
             android:parentActivityName=".MainActivity">
         </activity>
 
+        <!--<receiver android:process=":remote" android:name=".AlarmReceiver"></receiver>-->
+
         <receiver android:name=".NotificationReceiver">
             <intent-filter>
                 <action android:name="notify.NOTIFICATION"/>
@@ -49,4 +51,5 @@
     </application>
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 </manifest>
