@@ -15,10 +15,12 @@ public class EventDbReaderHelper extends SQLiteOpenHelper {
         static final String COLUMN_EVENT_DATE = "event_date";
         static final String COLUMN_EVENT_LOCATION = "event_location";
         static final String COLUMN_EVENT_POSTER = "event_poster";
+        static final String COLUMN_EVENT_PRIORITY ="event_priority";
     }
 
 
     public static final String TEXT_TYPE = " TEXT";
+    public static final String INTEGER_TYPE  = " INTEGER";
     public static final String COMMA_SEP = ",";
 
     private static final String SQL_CREATE_EVENT =
@@ -27,6 +29,7 @@ public class EventDbReaderHelper extends SQLiteOpenHelper {
                     EventEntry.COLUMN_EVENT_NAME + TEXT_TYPE + COMMA_SEP +
                     EventEntry.COLUMN_EVENT_DATE + TEXT_TYPE + COMMA_SEP +
                     EventEntry.COLUMN_EVENT_POSTER + TEXT_TYPE + COMMA_SEP +
+                    EventEntry.COLUMN_EVENT_PRIORITY + INTEGER_TYPE + COMMA_SEP +
                     EventEntry.COLUMN_EVENT_LOCATION + TEXT_TYPE + ")";
 
 

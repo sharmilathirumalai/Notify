@@ -54,6 +54,7 @@ public class MainPage extends Fragment {
 
     private String mCurrentPhotoPath;
     List<String> permissionsList = new ArrayList<>();
+    private  List<EventModel> eventsList = new ArrayList<>();
 
 
     public MainPage() {
@@ -104,7 +105,7 @@ public class MainPage extends Fragment {
         EventDataQueries database = new EventDataQueries(getContext());
         events = view.findViewById(R.id.listview_events);
         database.open();
-        final List<EventModel> eventsList = database.getUpcomingEvents();
+        eventsList = database.getUpcomingEvents();
         events.setAdapter(new EventAdapter(getActivity(), eventsList ));
         database.close();
 
@@ -121,6 +122,7 @@ public class MainPage extends Fragment {
                 detailsBundle.putString(SaveEvent.EventDate, event.getDate().toString());
                 detailsBundle.putString(SaveEvent.EventLocation, event.getLocation());
                 detailsBundle.putString(SaveEvent.posterThumbnail, event.getposter());
+                detailsBundle.putBoolean(SaveEvent.EventPriority, event.getIsPrior());
 
                 intent.putExtra("bundle", detailsBundle);
                 String a = intent.getStringExtra(SaveEvent.EventId);
@@ -137,7 +139,8 @@ public class MainPage extends Fragment {
         super.onResume();
         EventDataQueries database = new EventDataQueries(getContext());
         database.open();
-        events.setAdapter(new EventAdapter(getActivity(), database.getUpcomingEvents()));
+        eventsList = database.getUpcomingEvents();
+        events.setAdapter(new EventAdapter(getActivity(), eventsList));
         database.close();
     }
 

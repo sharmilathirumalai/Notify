@@ -2,12 +2,14 @@ package com.example.notify;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,6 +38,7 @@ public class SaveEvent extends AppCompatActivity {
     public static final String EventName = "event_name";
     public static final String EventLocation = "event_location";
     public static final String EventDate = "event_date";
+    public static final String EventPriority = "event_priority";
 
     private  String imagepath = "";
     private static long eventID = -1;
@@ -45,6 +48,7 @@ public class SaveEvent extends AppCompatActivity {
     private ImageView eventPoster;
     private Button savebtn;
     private FloatingActionButton sharebtn;
+    private Switch eventPriority;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,7 @@ public class SaveEvent extends AppCompatActivity {
         eventLocation = findViewById(R.id.event_location);
         eventDate = findViewById(R.id.event_date);
         eventPoster = findViewById(R.id.event_poster);
+        eventPriority = findViewById(R.id.event_priority);
         savebtn = findViewById(R.id.save_btn);
         sharebtn = findViewById(R.id.share_btn);
         
@@ -74,6 +79,7 @@ public class SaveEvent extends AppCompatActivity {
             eventName.setText(data.getString(SaveEvent.EventName));
             eventLocation.setText(data.getString(SaveEvent.EventLocation));
             eventDate.setText(data.getString(SaveEvent.EventDate));
+            eventPriority.setChecked(data.getBoolean(SaveEvent.EventPriority));
 
             try {
                 imagepath = data.getString(SaveEvent.posterThumbnail);
@@ -102,17 +108,44 @@ public class SaveEvent extends AppCompatActivity {
                 String name = String.valueOf(eventName.getText());
                 String date = String.valueOf(eventDate.getText());
                 String location = String.valueOf(eventLocation.getText());
-                EventModel event = new EventModel(name, date, location, imagepath);
+                Boolean isPrior = eventPriority.isChecked();
+                Boolean isError = false;
+
+                if(name == null || name.trim().isEmpty()) {
+                    eventName.setError(getText(R.string.event_name_error));
+                    isError = true;
+                }
+
+                if(date == null || date.trim().isEmpty()) {
+                    eventDate.setError(getText(R.string.event_location_error));
+                    isError = true;
+                }
+
+                if(location == null || location.trim().isEmpty()) {
+                    eventLocation.setError(getText(R.string.event_date_error));
+                    isError = true;
+                }
+
+                if(isError) {
+                    return;
+                }
+
                 EventModel updatedevent;
 
                 database.open();
                 if (eventID != -1) {
+                    EventModel event = new EventModel(eventID, name, date, location, imagepath, isPrior);
                     updatedevent = database.update(event);
                 } else {
+                    EventModel event = new EventModel(name, date, location, imagepath, isPrior);
                     updatedevent = database.create(event);
                 }
+
                 database.close();
-                Toast.makeText(getApplicationContext(), "Saved successfully", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.save_sucess), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("selected_navigation", R.id.navigation_events);
+                startActivity(intent);
             }
         });
 
@@ -132,9 +165,9 @@ public class SaveEvent extends AppCompatActivity {
         intent.putExtra(Intent.EXTRA_SUBJECT, eventName.getText());
         intent.putExtra(Intent.EXTRA_TEXT, message);
         intent.setType("text/plain");
-        if (imagepath != "") {
-            intent.putExtra(Intent.EXTRA_STREAM, imagepath);
 
+        if (imagepath != "") {
+            intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(imagepath));
             intent.setType("image/jpeg");
         }
         startActivity(Intent.createChooser(intent, getResources().getString(R.string.share_using)));

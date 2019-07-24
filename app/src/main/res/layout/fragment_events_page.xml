@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/id_frame"
     tools:context=".EventsPage">
 
 
@@ -11,6 +12,7 @@
         android:id="@+id/listview_events"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
         android:dividerHeight="0.4dp"
         android:isScrollContainer="false"
         android:scrollbars="none"
@@ -27,5 +29,6 @@
         android:paddingTop="60dp"
         android:textSize="30sp"
         android:text="No Events!"/>
+        android:scrollbars="none"></com.baoyz.swipemenulistview.SwipeMenuListView>
 
 </FrameLayout>

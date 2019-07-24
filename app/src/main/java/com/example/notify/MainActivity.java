@@ -1,11 +1,13 @@
 package com.example.notify;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "Activity";
@@ -22,7 +24,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         setContentView(R.layout.activity_main);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
-        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+
+        if(getIntent().getIntExtra("selected_navigation", 0) == R.id.navigation_events) {
+            bottomNavigationView.setSelectedItemId(R.id.navigation_events);
+        } else  {
+            bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+        }
     }
 
     @Override

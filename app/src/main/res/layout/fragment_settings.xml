@@ -7,7 +7,6 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -45,7 +44,6 @@
             android:layout_below="@+id/textView2"
             android:layout_alignParentEnd="true"
             android:entries="@array/alarms" />
-
 
 
 

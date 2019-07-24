@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -85,6 +86,7 @@ public class EventsPage extends Fragment {
                 detailsBundle.putString(SaveEvent.EventDate, event.getDate().toString());
                 detailsBundle.putString(SaveEvent.EventLocation, event.getLocation());
                 detailsBundle.putString(SaveEvent.posterThumbnail, event.getposter());
+                detailsBundle.putBoolean(SaveEvent.EventPriority, event.getIsPrior());
 
                 intent.putExtra("bundle", detailsBundle);
                 String a = intent.getStringExtra(SaveEvent.EventId);
@@ -116,6 +118,7 @@ public class EventsPage extends Fragment {
         if(database.delete(event)) {
             eventsList.remove(event);
             events.invalidateViews();
+            Toast.makeText(getContext(), getString(R.string.delete_sucess), Toast.LENGTH_LONG).show();
         }
         database.close();
     }
