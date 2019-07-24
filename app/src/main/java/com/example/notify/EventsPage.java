@@ -83,6 +83,7 @@ public class EventsPage extends Fragment {
                 detailsBundle.putString(SaveEvent.EventDate, event.getDate().toString());
                 detailsBundle.putString(SaveEvent.EventLocation, event.getLocation());
                 detailsBundle.putString(SaveEvent.posterThumbnail, event.getposter());
+                detailsBundle.putBoolean(SaveEvent.EventPriority, event.getIsPrior());
 
                 intent.putExtra("bundle", detailsBundle);
                 String a = intent.getStringExtra(SaveEvent.EventId);

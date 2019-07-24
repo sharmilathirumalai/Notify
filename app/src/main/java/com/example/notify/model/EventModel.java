@@ -10,6 +10,7 @@ public class EventModel {
     private Date event_date;
     private String event_location;
     private String event_poster = "";
+    private Boolean isPrior = false;
 
     public EventModel(String event_name, String event_date, String event_location) {
         this.event_name = event_name;
@@ -19,9 +20,10 @@ public class EventModel {
             e.printStackTrace();
         }
         this.event_location = event_location;
+        this.isPrior = true;
     }
 
-    public EventModel(long id, String event_name, String event_date, String event_location, String event_poster) {
+    public EventModel(long id, String event_name, String event_date, String event_location, String event_poster, Boolean isPrior) {
         this.id = id;
         this.event_name = event_name;
         try {
@@ -34,10 +36,10 @@ public class EventModel {
         }
         this.event_location = event_location;
         this.event_poster = event_poster;
+        this.isPrior = isPrior;
     }
 
-    public EventModel(String event_name, String event_date, String event_location, String event_poster) {
-        this.id = id;
+    public EventModel(String event_name, String event_date, String event_location, String event_poster, Boolean isPrior) {
         this.event_name = event_name;
         try {
             this.event_date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(event_date);
@@ -46,6 +48,7 @@ public class EventModel {
         }
         this.event_location = event_location;
         this.event_poster = event_poster;
+        this.isPrior = isPrior;
     }
 
 
@@ -69,6 +72,8 @@ public class EventModel {
         return event_poster;
     }
 
+    public Boolean getIsPrior() { return isPrior; }
+
     public void setLocation(String event_location) {
         this.event_location = event_location;
     }
@@ -87,5 +92,9 @@ public class EventModel {
 
     public void setposter(String event_poster) {
         this.event_poster = event_poster;
+    }
+
+    public  void setPriority(Boolean isPrior) {
+        this.isPrior = isPrior;
     }
 }

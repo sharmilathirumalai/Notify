@@ -34,7 +34,8 @@ public class EventDataQueries {
             EventDbReaderHelper.EventEntry.COLUMN_EVENT_NAME,
             EventDbReaderHelper.EventEntry.COLUMN_EVENT_DATE,
             EventDbReaderHelper.EventEntry.COLUMN_EVENT_LOCATION,
-            EventDbReaderHelper.EventEntry.COLUMN_EVENT_POSTER
+            EventDbReaderHelper.EventEntry.COLUMN_EVENT_POSTER,
+            EventDbReaderHelper.EventEntry.COLUMN_EVENT_PRIORITY
     };
 
 
@@ -54,6 +55,7 @@ public class EventDataQueries {
         values.put(EventDbReaderHelper.EventEntry.COLUMN_EVENT_LOCATION, event.getLocation());
         values.put(EventDbReaderHelper.EventEntry.COLUMN_EVENT_DATE, event.getDate().toString());
         values.put(EventDbReaderHelper.EventEntry.COLUMN_EVENT_POSTER, event.getposter());
+        values.put(EventDbReaderHelper.EventEntry.COLUMN_EVENT_PRIORITY, (event.getIsPrior() ? 1 :0));
 
         Cursor dbCursor = database.query(EventDbReaderHelper.EventEntry.TABLE_NAME, null, null, null, null, null, null);
         String[] columnNames = dbCursor.getColumnNames();
@@ -76,6 +78,7 @@ public class EventDataQueries {
         values.put(EventDbReaderHelper.EventEntry.COLUMN_EVENT_LOCATION, event.getLocation());
         values.put(EventDbReaderHelper.EventEntry.COLUMN_EVENT_DATE, event.getDate().toString());
         values.put(EventDbReaderHelper.EventEntry.COLUMN_EVENT_POSTER, event.getposter());
+        values.put(EventDbReaderHelper.EventEntry.COLUMN_EVENT_PRIORITY, (event.getIsPrior() ? 1 :0));
 
         if(database.update(EventDbReaderHelper.EventEntry.TABLE_NAME, values,
                 EventDbReaderHelper.EventEntry._ID + "=" + event.getId(),
@@ -108,6 +111,7 @@ public class EventDataQueries {
                 EventDbReaderHelper.EventEntry._ID
                         + "=?" , args) > 0;
     }
+
     public EventModel getEvent(long id) {
         String[] args = {String.valueOf(id)};
         Cursor cursor = database.query(EventDbReaderHelper.EventEntry.TABLE_NAME,
@@ -141,8 +145,8 @@ public class EventDataQueries {
                 filteredevents.add(e);
             }
         }
-        if(filteredevents.size() > 0) {
 
+        if(filteredevents.size() > 0) {
             Collections.sort(filteredevents, new Comparator<EventModel>() {
 
                 @Override
@@ -152,10 +156,7 @@ public class EventDataQueries {
                 }
             });
 
-
-
             List<EventModel> subItems;
-
             if(filteredevents.size() > 1) {
                 subItems = new ArrayList<EventModel>(filteredevents.subList(0, 2));
             } else {
@@ -169,6 +170,6 @@ public class EventDataQueries {
 
     private EventModel getEventDataFromCursor(Cursor cursor) {
         return new EventModel(cursor.getLong(0), cursor.getString(1),
-                cursor.getString(2), cursor.getString(3), cursor.getString(4));
+                cursor.getString(2), cursor.getString(3), cursor.getString(4), (cursor.getInt(5) == 0 ? false : true));
     }
 }
