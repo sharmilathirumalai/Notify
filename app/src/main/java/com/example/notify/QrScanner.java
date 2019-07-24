@@ -9,13 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.notify.db.EventDataQueries;
 import com.example.notify.model.EventModel;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.zxing.Result;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
@@ -56,20 +52,11 @@ public class QrScanner extends AppCompatActivity implements ZXingScannerView.Res
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
             try {
-                Date eventDate = format.parse(eventDateString);
-                Date currentTime = Calendar.getInstance().getTime();
-                long difference = eventDate.getTime() - currentTime.getTime();
-                Log.d(TAG, "eventDate: " + eventDate);
-                Log.d(TAG, "currentTime: " + currentTime);
-                Log.d(TAG, "difference: " + difference);
                 // todo change the time parameter.
                 // todo. store the details in local storage. with that id, create an intent and push it to alarmManager
 
                 final EventDataQueries database = new EventDataQueries(getApplicationContext());
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-                String eventDateStr = dateFormat.format(eventDate);
-                Log.d(TAG, "eventDateStr: "+eventDateStr);
-                EventModel event = new EventModel(eventName, eventDateStr, eventLocation);
+                EventModel event = new EventModel(eventName, eventDateString, eventLocation);
                 database.open();
                 EventModel modelObject = database.create(event);
                 database.close();
@@ -77,14 +64,14 @@ public class QrScanner extends AppCompatActivity implements ZXingScannerView.Res
                 // creating intent and passing the event informations
                 Intent intent = new Intent(this,NotificationReceiver.class);
                 intent.putExtra("id",modelObject.getId());
-                intent.putExtra("location",eventLocation);
-                intent.putExtra("date",eventDateString);
-                intent.putExtra("name",eventName);
-                Log.d(TAG, "location: "+modelObject.getLocation());
-                Log.d(TAG, "date: "+modelObject.getDate());
-                Log.d(TAG, "name: "+modelObject.getName());
+                intent.putExtra("location",event.getLocation());
+                intent.putExtra("date",event.getDate().toString());
+                intent.putExtra("name",event.getName());
+                Log.d(TAG, "location: "+event.getLocation());
+                Log.d(TAG, "date: "+event.getDate());
+                Log.d(TAG, "name: "+event.getName());
                 NotificationReceiver alarm = new NotificationReceiver();
-                alarm.setAlarm(this, difference, intent);
+                alarm.setAlarm(this, event.getDate(), intent);
 
                 Toast.makeText(this, "Saved successfully", Toast.LENGTH_LONG).show();
 //                Snackbar.make(CoordinatorLayout, R.string.saved,

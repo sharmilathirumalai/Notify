@@ -41,7 +41,7 @@ public class SaveEvent extends AppCompatActivity {
     public static final String EventPriority = "event_priority";
 
     private String imagepath = "";
-    private static long eventID = -1;
+    private long eventID = -1;
     private String action;
 
     private EditText eventName, eventLocation, eventDate;
@@ -153,11 +153,12 @@ public class SaveEvent extends AppCompatActivity {
                 Log.d(TAG, "-- name: "+name);
 
                 database.open();
+                EventModel event;
                 if (eventID != -1) {
-                    EventModel event = new EventModel(eventID, name, date, location, imagepath, isPrior);
+                    event = new EventModel(eventID, name, date, location, imagepath, isPrior);
                     updatedevent = database.update(event);
                 } else {
-                    EventModel event = new EventModel(name, date, location, imagepath, isPrior);
+                    event = new EventModel(name, date, location, imagepath, isPrior);
                     updatedevent = database.create(event);
                 }
 
@@ -165,15 +166,16 @@ public class SaveEvent extends AppCompatActivity {
 
                 // creating intent and passing the event information
                 Intent intent = new Intent(getApplicationContext(),NotificationReceiver.class);
-                intent.putExtra("id",updatedevent.getId());
-                intent.putExtra("location",eventLocation.getText().toString());
-                intent.putExtra("date",eventDate.getText().toString());
-                intent.putExtra("name",eventName.getText().toString());
+                intent.putExtra("id", updatedevent.getId());
+                intent.putExtra("location",event.getLocation());
+                intent.putExtra("date",event.getDate().toString());
+                intent.putExtra("name",event.getName());
                 Log.d(TAG, "location: "+updatedevent.getLocation());
                 Log.d(TAG, "date: "+updatedevent.getDate());
                 Log.d(TAG, "name: "+updatedevent.getName());
                 NotificationReceiver alarm = new NotificationReceiver();
-                alarm.setAlarm(getApplicationContext(), 2000, intent);
+
+                alarm.setAlarm(getApplicationContext(), event.getDate(), intent);
 
 //                Toast.makeText(getApplicationContext(), "Saved successfully", Toast.LENGTH_LONG).show();
 

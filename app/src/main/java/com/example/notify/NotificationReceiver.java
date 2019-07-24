@@ -9,12 +9,17 @@ import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.PowerManager;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class NotificationReceiver extends BroadcastReceiver {
     private static final String TAG = "Activity";
@@ -61,13 +66,12 @@ public class NotificationReceiver extends BroadcastReceiver {
         stackBuilder1.addNextIntent(intentAction);
         PendingIntent actionPendingIntent = PendingIntent.getActivity(context, 0, intentAction, 0);
 
-
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "");
         builder.setContentTitle(event_name);
         builder.setContentText(event_location + " " + event_date);
         builder.setTicker("Event Alert");
         builder.setAutoCancel(true);
-        builder.setSmallIcon(R.drawable.notification_icon);
+        builder.setSmallIcon(R.drawable.ic_camera_black_24dp);
         builder.setContentIntent(pendingIntent);
         builder.addAction(R.drawable.ic_location_icon, "Show nagivation", actionPendingIntent);
         Notification notification = builder.build();
@@ -76,31 +80,31 @@ public class NotificationReceiver extends BroadcastReceiver {
         wakeLock.release();
     }
 
-
-//    public void setAlarm(Context context, long time) {
-//        Log.d(TAG, "setAlarm: ");
-//        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-//        Intent intent = new Intent(context, NotificationReceiver.class);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
-//        alarmManager.setExact(AlarmManager.RTC_WAKEUP, 2000, pendingIntent);
-//    }
-
-    public void setAlarm(Context context, long time, Intent intent) {
-        long alarmTime = time;
-        SharedPreferences prefs = context.getSharedPreferences("notify", context.MODE_PRIVATE);
-        String notifyBefore = prefs.getString("notify_before", null);
-        if (notifyBefore == null) {
-            alarmTime = alarmTime - (1000 * 60 * 60);
-        } else {
-            if(notifyBefore == "30"){
-                alarmTime = alarmTime - (1000 * 60 * 30);
-            }
-        }
-        long newTime = 20000000;
-        Log.d(TAG, "alarmTime: "+alarmTime);
+    public void setAlarm(Context context, Date date, Intent intent)  {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, newTime, pendingIntent);
-//        alarmManager.setExact(AlarmManager.RTC, alarmTime, pendingIntent);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date1 = new Date();
+        String datestr= formatter.format(date1);
+        Date todaysDate = null;
+        try {
+            todaysDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(datestr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Calendar c = Calendar.getInstance();
+        Calendar c1 = Calendar.getInstance();
+
+        c.add(Calendar.MINUTE, 2);
+        Log.d(TAG, String.valueOf(c.getTimeInMillis()));
+        Long minutesdifference = new Long(TimeUnit.MILLISECONDS.toMinutes(date.getTime() - todaysDate.getTime()));
+        Log.d(TAG, String.valueOf(minutesdifference.intValue()));
+        c1.add(Calendar.MINUTE, minutesdifference.intValue());
+
+        long tiggerTime = c1.getTimeInMillis();
+        Log.d(TAG, String.valueOf(tiggerTime));
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, tiggerTime, pendingIntent);
     }
 }
