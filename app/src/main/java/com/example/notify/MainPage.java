@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -25,6 +26,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.notify.adapter.EventAdapter;
 import com.example.notify.db.EventDataQueries;
+import com.example.notify.model.EventModel;
 
 import java.io.File;
 import java.io.IOException;
@@ -100,8 +102,30 @@ public class MainPage extends Fragment {
         EventDataQueries database = new EventDataQueries(getContext());
         events = view.findViewById(R.id.listview_events);
         database.open();
-        events.setAdapter(new EventAdapter(getActivity(), database.getUpcomingEvents()));
+        final List<EventModel> eventsList = database.getUpcomingEvents();
+        events.setAdapter(new EventAdapter(getActivity(), eventsList ));
         database.close();
+
+        events.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View v, int position, long id){
+
+                EventModel event = eventsList.get(position);
+                Intent intent = new Intent(getContext(), SaveEvent.class);
+
+                Bundle detailsBundle = new Bundle();
+                detailsBundle.putString(SaveEvent.EventId, Long.toString(event.getId()));
+                detailsBundle.putString(SaveEvent.EventName, event.getName());
+                detailsBundle.putString(SaveEvent.EventDate, event.getDate().toString());
+                detailsBundle.putString(SaveEvent.EventLocation, event.getLocation());
+                detailsBundle.putString(SaveEvent.posterThumbnail, event.getposter());
+
+                intent.putExtra("bundle", detailsBundle);
+                String a = intent.getStringExtra(SaveEvent.EventId);
+                startActivity(intent);
+            }
+        });
+
 
         return view;
     }

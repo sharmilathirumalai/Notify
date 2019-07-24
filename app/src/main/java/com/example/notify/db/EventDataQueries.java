@@ -9,9 +9,13 @@ import android.util.Log;
 
 import com.example.notify.model.EventModel;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 
@@ -114,23 +118,48 @@ public class EventDataQueries {
         return  event;
     }
 
-    public List<EventModel> getUpcomingEvents() {
+    public List<EventModel> getUpcomingEvents()  {
         List<EventModel> events = getEventsList();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date(System.currentTimeMillis());
+        Date todaysDate = null;
+        try {
+            String datestr= dateFormat.format(date);
+            todaysDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(datestr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if(todaysDate == null) {
+            return  new ArrayList<>();
+        }
 
-        if(events.size() > 0) {
-            Collections.sort(events, new Comparator<EventModel>() {
+        List<EventModel> filteredevents = new ArrayList<>();
+
+
+        for (EventModel e: events) {
+            if(e.getDate().compareTo(todaysDate) == 1) {
+                filteredevents.add(e);
+            }
+        }
+        if(filteredevents.size() > 0) {
+
+            Collections.sort(filteredevents, new Comparator<EventModel>() {
 
                 @Override
                 public int compare(EventModel o1, EventModel o2) {
+
                     return o1.getDate().compareTo(o2.getDate());
                 }
             });
+
+
+
             List<EventModel> subItems;
 
-            if(events.size() > 1) {
-                subItems = new ArrayList<EventModel>(events.subList(0, 2));
+            if(filteredevents.size() > 1) {
+                subItems = new ArrayList<EventModel>(filteredevents.subList(0, 2));
             } else {
-                subItems = new ArrayList<EventModel>(events.subList(0, 1));
+                subItems = new ArrayList<EventModel>(filteredevents.subList(0, 1));
             }
             return subItems;
         }
