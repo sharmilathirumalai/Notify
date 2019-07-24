@@ -78,17 +78,15 @@ public class EventDataQueries {
         return null;
     }
 
-    public List<EventModel> getUpcomingEvents() {
+    public List<EventModel> getEventsList() {
         List<EventModel> eventList = new ArrayList<EventModel>();
         Cursor cursor = database.query(EventDbReaderHelper.EventEntry.TABLE_NAME,
-                eventColumns, null, null, null, null, EventDbReaderHelper.EventEntry.COLUMN_EVENT_DATE, "2");
-
+                eventColumns, null, null, null, null, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             EventModel event = getEventDataFromCursor(cursor);
             eventList.add(event);
             cursor.moveToNext();
-
         }
         cursor.close();
         return eventList;
@@ -110,8 +108,9 @@ public class EventDataQueries {
         return  event;
     }
 
-    public List<EventModel> getEventList() {
-        List<EventModel> events = getEventList();
+    public List<EventModel> getUpcomingEvents() {
+        List<EventModel> events = getEventsList();
+
         if(events.size() > 0) {
             Collections.sort(events, new Comparator<EventModel>() {
 
@@ -130,7 +129,7 @@ public class EventDataQueries {
             return subItems;
         }
 
-        return  null;
+        return  new ArrayList<EventModel>();
     }
 
     private EventModel getEventDataFromCursor(Cursor cursor) {

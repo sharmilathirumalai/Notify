@@ -6,21 +6,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -29,8 +25,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import com.example.notify.adapter.EventAdapter;
 import com.example.notify.db.EventDataQueries;
-import com.example.notify.model.EventModel;
 
 import java.io.File;
 import java.io.IOException;
@@ -72,7 +68,6 @@ public class MainPage extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_main_page, container, false);
 
-
         ImageButton launchCamera = view.findViewById(R.id.launch_camera);
         ImageButton launchQR = view.findViewById(R.id.launch_qrscanner);
         loading = view.findViewById(R.id.progress_circular);
@@ -102,25 +97,15 @@ public class MainPage extends Fragment {
         });
 
 
-        ImageView image = view.findViewById(R.id.imageView2);
-        setImage(image);
-
-        TextView dateview = view.findViewById(R.id.textView_date);
-        setDate(dateview);
-
-        TextView info = view.findViewById(R.id.textView_info);
-        setinfo(info);
-
-        TextView events=view.findViewById(R.id.textView_events);
-        setText(events);
 
         if (!checkPermissions()) {
             requestPermissions();
         }
 
         EventDataQueries database = new EventDataQueries(getContext());
+        final ListView events = view.findViewById(R.id.listview_events);
         database.open();
-        List<EventModel> upcomingevents = database.getUpcomingEvents();
+        events.setAdapter(new EventAdapter(getActivity(), database.getUpcomingEvents()));
         database.close();
 
 

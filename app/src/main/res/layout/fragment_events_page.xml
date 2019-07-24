@@ -9,27 +9,14 @@
     <!-- TODO: Update blank fragment layout -->
 
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <ListView
+        android:id="@+id/listview_events"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".display.MainActivity"
-        tools:showIn="@layout/activity_main">
-
-        <ListView
-            android:id="@+id/listview_students"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:dividerHeight="1dp"
-            android:isScrollContainer="false"
-            android:scrollbars="none">
-            <include layout="@layout/list_items"/></ListView>
-
-
-
-    </LinearLayout>
+        android:dividerHeight="0.3dp"
+        android:isScrollContainer="false"
+        android:scrollbars="none"
+        android:layout_marginBottom="80dp">
+    </ListView>
 
 </FrameLayout>
