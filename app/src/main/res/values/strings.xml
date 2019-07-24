@@ -27,7 +27,7 @@
 
     <string name="event_name_error">Name cannot be empty</string>
     <string name="event_location_error">Location cannot be empty</string>
-    <string name="event_date_error">date cannot be empty</string>
+    <string name="event_date_error">Date cannot be empty</string>
 
     <string name="save_sucess">Saved Successfully</string>
     <string name="delete_sucess">Deleted Successfully</string>
