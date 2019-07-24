@@ -37,7 +37,7 @@ public class SaveEvent extends AppCompatActivity {
     public static final String EventLocation = "event_location";
     public static final String EventDate = "event_date";
 
-    private static String imagepath = "";
+    private  String imagepath = "";
     private static long eventID = -1;
     private String action;
 
@@ -55,15 +55,20 @@ public class SaveEvent extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle data  = getIntent().getBundleExtra("bundle");
         action = intent.getStringExtra(actionType);
-        String id = data.getString(SaveEvent.EventId);
-
+        String id = null;
+        imagepath = "";
+        
         eventName = findViewById(R.id.event_name);
         eventLocation = findViewById(R.id.event_location);
         eventDate = findViewById(R.id.event_date);
         eventPoster = findViewById(R.id.event_poster);
         savebtn = findViewById(R.id.save_btn);
         sharebtn = findViewById(R.id.share_btn);
-
+        
+        if(data != null) { 
+            id = data.getString(SaveEvent.EventId);
+        }
+        
         if (id != null) {
             eventID = Long.parseLong(id);
             eventName.setText(data.getString(SaveEvent.EventName));
