@@ -12,6 +12,8 @@
         android:id="@+id/wrapper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
         tools:context=".MainActivity">
 
         <TextView
@@ -19,7 +21,6 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:text="@string/captureimage"
-            android:textAlignment="center"
             android:fontFamily="@font/josefinsans_bold"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="20dp" />
@@ -30,51 +31,54 @@
             android:layout_alignParentRight="true"
             android:layout_height="wrap_content"
             android:layout_marginLeft="205dp"
-            android:layout_marginRight="-1dp"
             android:fontFamily="@font/josefinsans_bold"
-            android:text="@string/scanqr"
-            android:textAlignment="center"
+            android:text=""
             android:textColor="@color/colorPrimaryDark"
             android:textSize="20dp" />
 
         <ImageButton
             android:id="@+id/launch_camera"
-            android:layout_width="202dp"
+            android:layout_width="200dp"
             android:layout_height="224dp"
             android:layout_marginLeft="2dp"
             android:layout_marginTop="9dp"
-            android:adjustViewBounds="true"
-            android:backgroundTint="@color/white"
-            android:padding="3dp"
+            android:layout_below="@+id/camera_btntext"
+            android:background="@android:color/white"
             android:scaleType="fitXY"
             android:src="@drawable/event_scan_1" />
 
         <ImageButton
             android:id="@+id/launch_qrscanner"
-            android:layout_width="208dp"
+            android:layout_width="200dp"
             android:layout_height="222dp"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="9dp"
             android:layout_marginRight="2dp"
-            android:adjustViewBounds="true"
-            android:backgroundTint="@color/white"
-            android:padding="3dp"
+            android:layout_marginTop="9dp"
+            android:background="@android:color/white"
+            android:layout_below="@id/qrscannertxt"
             android:scaleType="fitXY"
             android:src="@drawable/qr_scan" />
         <!--android:background="?attr/selectableItemBackgroundBorderless"-->
 
         <TextView
             android:id="@+id/textView_events"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/launch_qrscanner"
-            android:layout_marginTop="15dp"
-            android:background="@color/primary_red"
+            android:layout_marginTop="35dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_corner"
+            android:elevation="4dp"
             android:fontFamily="@font/josefinsans_bold"
             android:padding="7dp"
+            android:paddingEnd="30dp"
+            android:shadowColor="#555"
+            android:shadowDx="1.5"
+            android:shadowDy="1.3"
+            android:shadowRadius="1.6"
             android:text="Upcoming Events"
             android:textColor="@color/white"
-            android:textSize="30sp" />
+            android:textSize="16sp" />
 
         <RelativeLayout
             android:id="@+id/upcoming_event"
@@ -112,7 +116,7 @@
                 app:civ_border_color="#EEEEEE"
                 app:civ_border_width="4dp"
                 app:civ_shadow="true"
-                app:civ_shadow_color="@color/primary_red"
+                app:civ_shadow_color="@color/colorPrimary"
                 app:civ_shadow_radius="10" />
 
             <TextView
@@ -167,7 +171,7 @@
                 app:civ_shadow="true"
                 app:civ_shadow_radius="10"
                 android:layout_marginTop="55dp"
-                app:civ_shadow_color="@color/primary_red"/>
+                app:civ_shadow_color="@color/black"/>
 
             <TextView
                 android:id="@+id/textView_info_2"
@@ -181,7 +185,7 @@
                 android:padding="15dp"
                 android:text="TextView"
                 android:textAlignment="inherit"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/black"
                 android:textSize="20dp" />
         </RelativeLayout>
 
@@ -232,8 +236,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:indeterminateTint="@color/primary_red"
-        android:progressTint="@color/primary_red"
+        android:indeterminateTint="@color/colorPrimary"
+        android:progressTint="@color/colorPrimary"
         android:visibility="gone" />
 
 </FrameLayout>

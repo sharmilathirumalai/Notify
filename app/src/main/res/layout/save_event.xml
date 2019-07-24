@@ -28,7 +28,7 @@
             android:layout_marginRight="-22dp"
             android:rotation="0"
             android:src="@mipmap/ic_share"
-            app:backgroundTint="@color/colorPrimary"
+            app:backgroundTint="@color/white"
             app:elevation="4dp" />
     </RelativeLayout>
 

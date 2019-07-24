@@ -5,7 +5,7 @@
     <string name="camera_permission_deined">Camera Access Denied</string>
     <string name="upcomingevents">Upcoming Events</string>
 
-    <string name="captureimage">Capture Image</string>
+    <string name="captureimage">Capture Events</string>
     <string name="scanqr">Scan QR </string>
 
     <string name="title_home">Home</string>
