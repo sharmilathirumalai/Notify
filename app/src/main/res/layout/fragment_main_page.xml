@@ -42,23 +42,26 @@
             android:layout_width="202dp"
             android:layout_height="224dp"
             android:layout_marginLeft="2dp"
-            android:layout_marginTop="5dp"
-            android:layout_below="@+id/camera_btntext"
-            android:background="@android:color/white"
+            android:layout_marginTop="9dp"
+            android:adjustViewBounds="true"
+            android:backgroundTint="@color/white"
+            android:padding="3dp"
             android:scaleType="fitXY"
-            android:src="@drawable/camera_icon" />
+            android:src="@drawable/event_scan_1" />
 
         <ImageButton
             android:id="@+id/launch_qrscanner"
             android:layout_width="208dp"
             android:layout_height="222dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="-1dp"
-            android:layout_marginTop="5dp"
-            android:background="@android:color/white"
-            android:layout_below="@id/qrscannertxt"
+            android:layout_marginTop="9dp"
+            android:layout_marginRight="2dp"
+            android:adjustViewBounds="true"
+            android:backgroundTint="@color/white"
+            android:padding="3dp"
             android:scaleType="fitXY"
-            android:src="@drawable/codescan_icon" />
+            android:src="@drawable/qr_scan" />
+        <!--android:background="?attr/selectableItemBackgroundBorderless"-->
 
         <TextView
             android:id="@+id/textView_events"

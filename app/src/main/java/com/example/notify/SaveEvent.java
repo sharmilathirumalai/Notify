@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.notify.db.EventDataQueries;
 import com.example.notify.model.EventModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.Parser;
 
@@ -31,53 +32,104 @@ public class SaveEvent extends AppCompatActivity {
     public static final String message = "message";
     public static final String TAG = "SaveEvent";
     public static final String posterThumbnail = "poster";
+    public static final String EventName = "event_name";
+    public static final String EventLocation = "event_location";
+    public static final String EventDate = "event_date";
+
     private static String imagepath = "";
+    private static long eventID = -1;
     private String action;
 
     private EditText eventName,eventLocation,eventDate;
     private ImageView eventPoster;
     private Button savebtn;
+    private FloatingActionButton sharebtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "SaveEvent: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.save_event);
+        setContentView(R.layout.save_event);
+
         Intent intent = getIntent();
         action = intent.getStringExtra(actionType);
-        setContentView(R.layout.save_event);
+        String id = intent.getStringExtra("event_id");
 
         eventName = findViewById(R.id.event_name);
         eventLocation = findViewById(R.id.event_location);
         eventDate = findViewById(R.id.event_date);
         eventPoster = findViewById(R.id.event_poster);
         savebtn = findViewById(R.id.save_btn);
+        sharebtn = findViewById(R.id.share_btn);
 
+         if(id !=null) {
+             eventID = Long.parseLong(id);
+             eventName.setText(intent.getStringExtra(SaveEvent.EventName));
+             eventLocation.setText(intent.getStringExtra(SaveEvent.EventLocation));
+             eventDate.setText(intent.getStringExtra(SaveEvent.EventDate));
 
-        if (action.equals("QR")) {
-            handleQR(intent);
-        } else {
-            handleOCR(intent);
-        }
+             try {
+                 imagepath = intent.getStringExtra(SaveEvent.posterThumbnail);
+                 FileInputStream file = new FileInputStream(new File(imagepath));
+                 eventPoster.setImageBitmap(BitmapFactory.decodeStream(file));
+                 file.close();
+             } catch (Exception e) {
+                 e.printStackTrace();
+             }
+
+         } else {
+             if (action.equals("QR")) {
+                 handleQR(intent);
+             } else {
+                 handleOCR(intent);
+             }
+         }
 
 
         savebtn.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-                final EventDataQueries database = new EventDataQueries(getApplicationContext());
+                EventDataQueries database = new EventDataQueries(getApplicationContext());
                 String name = String.valueOf(eventName.getText());
-                String location = String.valueOf(eventDate.getText());
-                String date = String.valueOf(eventLocation.getText());
+                String date = String.valueOf(eventDate.getText());
+                String location = String.valueOf(eventLocation.getText());
+                EventModel event = new EventModel(name, date, location, imagepath);
+                EventModel updatedevent;
 
-                EventModel event = new EventModel(name, date, location);
                 database.open();
-                EventModel a = database.create(event);
+                if(eventID != -1 ){
+                    updatedevent = database.update(event);
+                } else {
+                    updatedevent= database.create(event);
+                }
                 database.close();
                 Toast.makeText(getApplicationContext(), "Saved successfully", Toast.LENGTH_LONG).show();
             }
             });
 
+        sharebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareEvent();
+            }
+        });
+
+    }
+
+    private void shareEvent() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        String message = eventName.getText() + "\n" + "Date: " + eventDate.getText();
+        intent.putExtra(Intent.EXTRA_SUBJECT, eventName.getText());
+        intent.putExtra(Intent.EXTRA_TEXT, message);
+        intent.setType("text/plain");
+        if(imagepath != "") {
+            intent.putExtra(Intent.EXTRA_STREAM, imagepath);
+
+            intent.setType("image/jpeg");
+        }
+        startActivity(Intent.createChooser(intent, getResources().getString(R.string.share_using)));
     }
 
     // this method reads the decoded QR text and loads it into the ui input fields

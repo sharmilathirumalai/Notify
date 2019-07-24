@@ -14,17 +14,18 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <activity android:name=".MainActivity">
             <meta-data
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcut"/>
         </activity>
 
+        <activity android:name=".MainActivity">
+        </activity>
+
         <activity android:name=".QrScanner"
             android:parentActivityName=".MainActivity">
         </activity>
+
         <activity android:name=".SaveEvent"
             android:parentActivityName=".MainActivity">
         </activity>
@@ -32,9 +33,6 @@
         <activity android:name=".ExpandNotification"
             android:parentActivityName=".MainActivity">
         </activity>
-
-        <!--<receiver android:process=":remote" android:name=".AlarmReceiver"></receiver>-->
-
         <receiver android:name=".NotificationReceiver">
             <intent-filter>
                 <action android:name="notify.NOTIFICATION"/>

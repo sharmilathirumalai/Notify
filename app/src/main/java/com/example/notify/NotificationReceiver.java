@@ -12,12 +12,12 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.PowerManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
 public class NotificationReceiver extends BroadcastReceiver {
     private static final String TAG = "Activity";
+
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "onReceive: ");
@@ -25,15 +25,19 @@ public class NotificationReceiver extends BroadcastReceiver {
         @SuppressLint("InvalidWakeLockTag") PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "" +
                 "");
         wakeLock.acquire();
-
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(new Intent(context, ExpandNotification.class));
         } else {
             context.startService(new Intent(context, ExpandNotification.class));
         }
 
+        String event_name = intent.getStringExtra("name");
+        String event_location = intent.getStringExtra("location");
+        String event_date = intent.getStringExtra("date");
+
+        // create intent to be passed to next class when user clicks on the notification
         Intent notificationIntent = new Intent(context, ExpandNotification.class);
+        notificationIntent.putExtra("location",event_location);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addParentStack(ExpandNotification.class);
         stackBuilder.addNextIntent(notificationIntent);
@@ -41,37 +45,47 @@ public class NotificationReceiver extends BroadcastReceiver {
         PendingIntent pendingIntent = stackBuilder.getPendingIntent(100, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
-        // load the data saved in local.
-        String notification_title = "You have an event notification";
-        String notification_body = "Halifax Coding Challenge";
-        // add icon if necessary
+
+        // intent for notification action
+//        Intent intentAction = new Intent(context, ProvideNavigation.class);
+//        intentAction.putExtra("action", "actionName");
+//
+//        TaskStackBuilder stackBuilder1 = TaskStackBuilder.create(context);
+//        stackBuilder1.addParentStack(ProvideNavigation.class);
+//        stackBuilder1.addNextIntent(intentAction);
+//        Log.d(TAG, "NotificationReceiver: ");
+//        PendingIntent actionPendingIntent = stackBuilder.getPendingIntent(100, PendingIntent.FLAG_UPDATE_CURRENT);
+//        PendingIntent actionPendingIntent = PendingIntent.getActivity(context,0,intentAction,0);
+
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "");
-        Notification notification = builder.setContentTitle(notification_title).setContentText(notification_body).setTicker("Event Alert").setAutoCancel(false).setSmallIcon(R.drawable.ic_settings_icon).setContentIntent(pendingIntent).build();
+        builder.setContentTitle(event_name);
+        builder.setContentText(event_location + " " + event_date);
+        builder.setTicker("Event Alert");
+        builder.setAutoCancel(false);
+        builder.setSmallIcon(R.drawable.notification_icon);
+        builder.setContentIntent(pendingIntent);
+//        builder.addAction(R.drawable.ic_location_icon, "Show .navigation", actionPendingIntent);
+        Notification notification = builder.build();
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0, notification);
-
-
-
-
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "")
-//                .setSmallIcon(R.drawable.ic_launcher_background)
-//                .setContentTitle("Hello")
-//                .setContentText("world")
-//                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-//        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-//        notificationManager.notify(0, builder.build());
-//        Toast.makeText(context, "Alarm !!!!!!!!!!", Toast.LENGTH_LONG).show();
-
         wakeLock.release();
     }
 
 
-    public void setAlarm(Context context, long time){
+    public void setAlarm(Context context, long time) {
         Log.d(TAG, "setAlarm: ");
-        AlarmManager alarmManager =( AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, NotificationReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, 2000, pendingIntent);
+    }
+
+    public void setAlarm(Context context, long time, Intent intent) {
+        Log.d(TAG, "setAlarm: ");
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+//        Intent intent = new Intent(context, NotificationReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, 2000, pendingIntent);
     }
 }

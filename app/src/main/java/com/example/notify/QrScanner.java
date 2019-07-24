@@ -7,8 +7,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.notify.db.EventDataQueries;
+import com.example.notify.model.EventModel;
 import com.google.zxing.Result;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -58,10 +61,29 @@ public class QrScanner extends AppCompatActivity implements ZXingScannerView.Res
                 Log.d(TAG, "eventDate: " + eventDate);
                 Log.d(TAG, "currentTime: " + currentTime);
                 Log.d(TAG, "difference: " + difference);
-                NotificationReceiver alarm = new NotificationReceiver();
                 // todo change the time parameter.
                 // todo. store the details in local storage. with that id, create an intent and push it to alarmManager
-                alarm.setAlarm(this, 2000);
+
+                final EventDataQueries database = new EventDataQueries(getApplicationContext());
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+                String eventDateStr = dateFormat.format(eventDate);
+                Log.d(TAG, "eventDateStr: "+eventDateStr);
+                EventModel event = new EventModel(eventName, eventDateStr, eventLocation);
+                database.open();
+                EventModel modelObject = database.create(event);
+                database.close();
+
+                // creating intent and passing the event informations
+                Intent intent = new Intent(this,NotificationReceiver.class);
+                intent.putExtra("id",modelObject.getId());
+                intent.putExtra("location",modelObject.getLocation());
+                intent.putExtra("date",modelObject.getDate());
+                intent.putExtra("name",modelObject.getName());
+                Log.d(TAG, "location: "+modelObject.getLocation());
+                Log.d(TAG, "date: "+modelObject.getDate());
+                Log.d(TAG, "name: "+modelObject.getName());
+                NotificationReceiver alarm = new NotificationReceiver();
+                alarm.setAlarm(this, 2000, intent);
 
                 Toast.makeText(this, "Saved successfully", Toast.LENGTH_LONG).show();
                 Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
@@ -70,12 +92,6 @@ public class QrScanner extends AppCompatActivity implements ZXingScannerView.Res
                 Toast.makeText(this, "Some error occurred while reading the QR", Toast.LENGTH_LONG).show();
             }
         }
-
-
-
-//        eventName.setText(messageArray[0]);
-//        eventLocation.setText(messageArray[2]);
-//        eventDate.setText(messageArray[1]);
 
     }
 }
