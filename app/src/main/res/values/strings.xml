@@ -31,6 +31,9 @@
     <string name="event_location_error">Location cannot be empty</string>
     <string name="event_date_error">date cannot be empty</string>
 
+    <string name="save_sucess">Saved Successfully</string>
+    <string name="delete_sucess">Deleted Successfully</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="shortcut_disabled_message">Shortcuts are available after Android 7.0</string>

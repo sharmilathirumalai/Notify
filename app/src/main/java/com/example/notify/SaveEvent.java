@@ -142,9 +142,10 @@ public class SaveEvent extends AppCompatActivity {
                 }
 
                 database.close();
-                Intent intent = new Intent();
-                
-                Toast.makeText(getApplicationContext(), "Saved successfully", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.save_sucess), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("selected_navigation", R.id.navigation_events);
+                startActivity(intent);
             }
         });
 
