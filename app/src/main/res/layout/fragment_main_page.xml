@@ -14,35 +14,64 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
+        <TextView
+            android:id="@+id/camera_btntext"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="@string/captureimage"
+            android:textAlignment="center"
+            android:fontFamily="@font/josefinsans_bold"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/qrscannertxt"
+            android:layout_width="200dp"
+            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="205dp"
+            android:layout_marginRight="-1dp"
+            android:fontFamily="@font/josefinsans_bold"
+            android:text="@string/scanqr"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20dp" />
+
         <ImageButton
             android:id="@+id/launch_camera"
-            android:layout_width="205dp"
-            android:layout_height="255dp"
+            android:layout_width="202dp"
+            android:layout_height="224dp"
             android:layout_marginLeft="2dp"
-            android:layout_marginTop="9dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/camera_btntext"
+            android:background="@android:color/white"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_icon_camera" />
+            android:src="@drawable/camera_icon" />
 
         <ImageButton
             android:id="@+id/launch_qrscanner"
-            android:layout_width="205dp"
-            android:layout_height="255dp"
+            android:layout_width="208dp"
+            android:layout_height="222dp"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="9dp"
-            android:layout_marginRight="2dp"
+            android:layout_marginRight="-1dp"
+            android:layout_marginTop="5dp"
+            android:background="@android:color/white"
+            android:layout_below="@id/qrscannertxt"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_icon_qr_code" />
+            android:src="@drawable/codescan_icon" />
 
         <TextView
             android:id="@+id/textView_events"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/launch_qrscanner"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/primary_red"
+            android:fontFamily="@font/josefinsans_bold"
             android:padding="7dp"
             android:text="Upcoming Events"
-            android:textColor="@color/primary_red"
-            android:textSize="20sp" />
+            android:textColor="@color/white"
+            android:textSize="30sp" />
 
         <RelativeLayout
             android:id="@+id/upcoming_event"
@@ -57,6 +86,8 @@
                 android:padding="10dp"
                 android:background="@drawable/circle_thumbnail"
                 android:text="TextView"
+                android:textColor="@color/colorPrimaryDark"
+                android:fontFamily="@font/josefinsans_regular"
                 android:textSize="20sp" />
 
             <!--<ImageView-->
@@ -72,6 +103,60 @@
             <com.mikhaellopez.circularimageview.CircularImageView
                 android:id="@+id/imageView2"
                 android:layout_width="140dp"
+                android:layout_height="126dp"
+                android:layout_marginTop="55dp"
+                android:src="@drawable/ic_photo_frame"
+                app:civ_border_color="#EEEEEE"
+                app:civ_border_width="4dp"
+                app:civ_shadow="true"
+                app:civ_shadow_color="@color/primary_red"
+                app:civ_shadow_radius="10" />
+
+            <TextView
+                android:id="@+id/textView_info"
+                android:layout_width="263dp"
+                android:layout_height="129dp"
+                android:layout_alignEnd="@+id/textView_date"
+                android:layout_marginLeft="150dp"
+                android:layout_marginTop="52dp"
+                android:layout_marginEnd="4dp"
+                android:fontFamily="@font/josefinsans_regular"
+                android:padding="15dp"
+                android:text="TextView"
+                android:textAlignment="inherit"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20dp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/upcoming_event_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/upcoming_event">
+
+            <TextView
+                android:id="@+id/textView_date_2"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:padding="10dp"
+                android:background="@drawable/circle_thumbnail"
+                android:text="TextView"
+                android:textColor="@color/colorPrimaryDark"
+                android:fontFamily="@font/josefinsans_regular"
+                android:textSize="20sp" />
+
+            <!--<ImageView-->
+            <!--android:id="@+id/imageView2"-->
+            <!--android:layout_width="148dp"-->
+            <!--android:layout_height="154dp"-->
+            <!--android:layout_alignStart="@+id/textView_date"-->
+            <!--android:layout_marginTop="52dp"-->
+            <!--android:scaleType="centerCrop"-->
+            <!--android:src="@drawable/ic_photo_frame" />-->
+
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/imageView3"
+                android:layout_width="140dp"
                 android:layout_height="140dp"
                 android:src="@drawable/ic_photo_frame"
                 app:civ_border_color="#EEEEEE"
@@ -79,18 +164,21 @@
                 app:civ_shadow="true"
                 app:civ_shadow_radius="10"
                 android:layout_marginTop="55dp"
-                app:civ_shadow_color="#8BC34A"/>
+                app:civ_shadow_color="@color/primary_red"/>
 
             <TextView
-                android:id="@+id/textView_info"
-                android:layout_width="257dp"
+                android:id="@+id/textView_info_2"
+                android:layout_width="272dp"
                 android:layout_height="149dp"
-                android:layout_alignEnd="@+id/textView_date"
+                android:layout_alignEnd="@+id/textView_date_2"
                 android:layout_marginLeft="150dp"
                 android:layout_marginTop="52dp"
+                android:layout_marginEnd="4dp"
+                android:fontFamily="@font/josefinsans_regular"
+                android:padding="15dp"
                 android:text="TextView"
-                android:textAlignment="center"
-                android:textColor="@color/colorPrimary"
+                android:textAlignment="inherit"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="20dp" />
         </RelativeLayout>
 

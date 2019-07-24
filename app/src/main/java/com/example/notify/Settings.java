@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
 
 
 /**
@@ -21,6 +22,8 @@ import android.view.ViewGroup;
  */
 public class Settings extends Fragment {
     private static final String TAG = "Settings";
+
+
 
     public Settings() {
         // Required empty public constructor
@@ -31,6 +34,7 @@ public class Settings extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         createNotificationChannel();
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_settings, container, false);
     }
 

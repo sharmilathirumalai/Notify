@@ -3,13 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".EventsPage">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/primary_red"
-        android:text="Event" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".display.MainActivity"
+        tools:showIn="@layout/activity_main">
+
+        <ListView
+            android:id="@+id/listview_students"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:dividerHeight="1dp"
+            android:isScrollContainer="false"
+            android:scrollbars="none">
+            <include layout="@layout/list_items"/></ListView>
+
+
+
+    </LinearLayout>
 
 </FrameLayout>

@@ -6,10 +6,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,11 +48,14 @@ public class MainPage extends Fragment {
     private static final int WRITE_PERMISSION_REQUEST = 1024;
     public static final String actionType = "OCR";
 
+
+
     List<String> permissionsList = new ArrayList<>();
 
     private String mCurrentPhotoPath;
     private ProgressBar loading;
     private RelativeLayout wrapper;
+    public String events;
 
 
     public MainPage() {
@@ -58,6 +66,7 @@ public class MainPage extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_main_page, container, false);
 
 
@@ -99,6 +108,9 @@ public class MainPage extends Fragment {
         TextView info = view.findViewById(R.id.textView_info);
         setinfo(info);
 
+        TextView events=view.findViewById(R.id.textView_events);
+        setText(events);
+
         if (!checkPermissions()) {
             requestPermissions();
         }
@@ -130,9 +142,17 @@ public class MainPage extends Fragment {
         view.setText(str);
     }
 
+    private void setText(TextView events)
+    {
+//        SpannableString string=new SpannableString("Upcoming Events");
+//        string.setSpan(new BackgroundColorSpan(Color.argb(255,193,34,62)),0,15, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        events.setText(string);
+    }
+
     private void setImage(ImageView image) {
         image.setImageResource(R.drawable.ic_photo_frame);
     }
+
 
     private void setinfo(TextView info) {
         String str_info = "Halifax Data Science\n" + "Social Meetup - Foggy Google\n" + "6pm";
