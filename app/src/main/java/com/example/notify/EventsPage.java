@@ -40,6 +40,8 @@ public class EventsPage extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_events_page, container, false);
+        SwipeMenuListView listView=v.findViewById(R.id.listview_events);
+        listView.setEmptyView(v.findViewById(R.id.emptyview));
 
         events = v.findViewById(R.id.listview_events);
         EventDataQueries database = new EventDataQueries(getContext());

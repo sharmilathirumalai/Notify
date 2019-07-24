@@ -89,7 +89,6 @@
                 android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:textSize="17sp" />
-
             <ListView
                 android:id="@+id/listview_events"
                 android:layout_width="match_parent"
@@ -98,7 +97,19 @@
                 android:layout_marginBottom="50dp"
                 android:dividerHeight="0.3dp"
                 android:isScrollContainer="false"
-                android:scrollbars="none"></ListView>
+                android:scrollbars="none">
+            </ListView>
+            <TextView
+                android:id="@+id/emptyview"
+                android:layout_below="@+id/textView_events"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:textColor="@color/grey"
+                android:textAlignment="center"
+                android:fontFamily="@font/kaushanscript"
+                android:paddingTop="60dp"
+                android:textSize="30sp"
+                android:text="No Events!"/>
         </RelativeLayout>
 
         <ProgressBar

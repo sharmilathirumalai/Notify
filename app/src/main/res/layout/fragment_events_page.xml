@@ -16,5 +16,16 @@
         android:scrollbars="none"
         android:layout_marginBottom="50dp">
     </com.baoyz.swipemenulistview.SwipeMenuListView>
+    <TextView
+        android:id="@+id/emptyview"
+        android:layout_below="@+id/textView_events"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:textColor="@color/grey"
+        android:textAlignment="center"
+        android:fontFamily="@font/kaushanscript"
+        android:paddingTop="60dp"
+        android:textSize="30sp"
+        android:text="No Events!"/>
 
 </FrameLayout>

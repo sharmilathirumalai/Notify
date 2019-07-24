@@ -66,6 +66,8 @@ public class MainPage extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_main_page, container, false);
+        ListView listView=view.findViewById(R.id.listview_events);
+        listView.setEmptyView(view.findViewById(R.id.emptyview));
 
         ImageButton launchCamera = view.findViewById(R.id.launch_camera);
         ImageButton launchQR = view.findViewById(R.id.launch_qrscanner);
