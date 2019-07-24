@@ -9,6 +9,7 @@ import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.PowerManager;
 import android.util.Log;
@@ -26,8 +27,10 @@ public class NotificationReceiver extends BroadcastReceiver {
                 "");
         wakeLock.acquire();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(new Intent(context, SaveEvent.class));
             context.startForegroundService(new Intent(context, ExpandNotification.class));
         } else {
+            context.startService(new Intent(context, SaveEvent.class));
             context.startService(new Intent(context, ExpandNotification.class));
         }
 
@@ -36,36 +39,37 @@ public class NotificationReceiver extends BroadcastReceiver {
         String event_date = intent.getStringExtra("date");
 
         // create intent to be passed to next class when user clicks on the notification
-        Intent notificationIntent = new Intent(context, ExpandNotification.class);
-        notificationIntent.putExtra("location",event_location);
+        Intent notificationIntent = new Intent(context, SaveEvent.class);
+        notificationIntent.putExtra("event_name", event_name);
+        notificationIntent.putExtra("event_location", event_location);
+        notificationIntent.putExtra("event_date", event_date);
+        notificationIntent.putExtra("ActionType", "notification");
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-        stackBuilder.addParentStack(ExpandNotification.class);
+        stackBuilder.addParentStack(SaveEvent.class);
         stackBuilder.addNextIntent(notificationIntent);
         Log.d(TAG, "NotificationReceiver: ");
         PendingIntent pendingIntent = stackBuilder.getPendingIntent(100, PendingIntent.FLAG_UPDATE_CURRENT);
 
-
-
         // intent for notification action
-//        Intent intentAction = new Intent(context, ProvideNavigation.class);
-//        intentAction.putExtra("action", "actionName");
-//
-//        TaskStackBuilder stackBuilder1 = TaskStackBuilder.create(context);
-//        stackBuilder1.addParentStack(ProvideNavigation.class);
-//        stackBuilder1.addNextIntent(intentAction);
-//        Log.d(TAG, "NotificationReceiver: ");
-//        PendingIntent actionPendingIntent = stackBuilder.getPendingIntent(100, PendingIntent.FLAG_UPDATE_CURRENT);
-//        PendingIntent actionPendingIntent = PendingIntent.getActivity(context,0,intentAction,0);
+        Intent intentAction = new Intent(context, ExpandNotification.class);
+        notificationIntent.putExtra("event_name", event_name);
+        notificationIntent.putExtra("event_location", event_location);
+        notificationIntent.putExtra("event_date", event_date);
+        intentAction.putExtra("ActionType", "map");
+        TaskStackBuilder stackBuilder1 = TaskStackBuilder.create(context);
+        stackBuilder1.addParentStack(ExpandNotification.class);
+        stackBuilder1.addNextIntent(intentAction);
+        PendingIntent actionPendingIntent = PendingIntent.getActivity(context, 0, intentAction, 0);
 
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "");
         builder.setContentTitle(event_name);
         builder.setContentText(event_location + " " + event_date);
         builder.setTicker("Event Alert");
-        builder.setAutoCancel(false);
+        builder.setAutoCancel(true);
         builder.setSmallIcon(R.drawable.notification_icon);
         builder.setContentIntent(pendingIntent);
-//        builder.addAction(R.drawable.ic_location_icon, "Show .navigation", actionPendingIntent);
+        builder.addAction(R.drawable.ic_location_icon, "Show nagivation", actionPendingIntent);
         Notification notification = builder.build();
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0, notification);
@@ -73,19 +77,30 @@ public class NotificationReceiver extends BroadcastReceiver {
     }
 
 
-    public void setAlarm(Context context, long time) {
-        Log.d(TAG, "setAlarm: ");
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, NotificationReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, 2000, pendingIntent);
-    }
+//    public void setAlarm(Context context, long time) {
+//        Log.d(TAG, "setAlarm: ");
+//        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+//        Intent intent = new Intent(context, NotificationReceiver.class);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+//        alarmManager.setExact(AlarmManager.RTC_WAKEUP, 2000, pendingIntent);
+//    }
 
     public void setAlarm(Context context, long time, Intent intent) {
-        Log.d(TAG, "setAlarm: ");
+        long alarmTime = time;
+        SharedPreferences prefs = context.getSharedPreferences("notify", context.MODE_PRIVATE);
+        String notifyBefore = prefs.getString("notify_before", null);
+        if (notifyBefore == null) {
+            alarmTime = alarmTime - (1000 * 60 * 60);
+        } else {
+            if(notifyBefore == "30"){
+                alarmTime = alarmTime - (1000 * 60 * 30);
+            }
+        }
+        long newTime = 20000000;
+        Log.d(TAG, "alarmTime: "+alarmTime);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-//        Intent intent = new Intent(context, NotificationReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, 2000, pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, newTime, pendingIntent);
+//        alarmManager.setExact(AlarmManager.RTC, alarmTime, pendingIntent);
     }
 }

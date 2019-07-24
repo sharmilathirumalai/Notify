@@ -1,39 +1,42 @@
 <resources>
-    <string name="app_name">Notify</string>
-    <string name="open_camera">Capture Text</string>
-    <string name="camera_permission_granted">Camera Access Granted</string>
-    <string name="camera_permission_deined">Camera Access Denied</string>
-    <string name="upcomingevents">Upcoming Events</string>
-    <string-array name="alarms">
-        <item>30 mins before</item>
-        <item>1 hour before</item>
-    </string-array>
-    <string name="captureimage">Capture Events</string>
-    <string name="scanqr">Scan QR </string>
+  <string name="app_name">Notify</string>
+  <string name="open_camera">Capture Text</string>
+  <string name="camera_permission_granted">Camera Access Granted</string>
+  <string name="camera_permission_deined">Camera Access Denied</string>
+  <string name="upcomingevents">Upcoming Events</string>
+  <string-array name="alarms">
+    <item>30 mins before</item>
+    <item>1 hour before</item>
+  </string-array>
+  <string name="captureimage">Capture Events</string>
+  <string name="scanqr">Scan QR
+  </string>
 
-    <string name="title_home">Home</string>
-    <string name="title_events">Events</string>
-    <string name="settings">Settings</string>
+  <string name="title_home">Home</string>
+  <string name="title_events">Events</string>
+  <string name="settings">Settings</string>
 
-    <string name="label_event_name">Event name</string>
-    <string name="label_priority">Priority</string>
-    <string name="label_shortcut_long_qr">QR code</string>
-    <string name="label_shortcut_long_ocr">Event poster</string>
-    <string name="label_shortcut_short_qr">QR</string>
-    <string name="label_shortcut_short_ocr">Poster</string>
+  <string name="label_event_name">Event name</string>
+  <string name="label_priority">Priority</string>
+  <string name="label_shortcut_long_qr">QR code</string>
+  <string name="label_shortcut_long_ocr">Event poster</string>
+  <string name="label_shortcut_short_qr">QR</string>
+  <string name="label_shortcut_short_ocr">Poster</string>
 
-    <string name="share_using">Share Via</string>
-    <string name="save">Save</string>
-    <string name="set_alarm">Set alarm</string>
+  <string name="share_using">Share Via</string>
+  <string name="update">Update</string>
+  <string name="save">Save</string>
+  <string name="set_alarm">Set alarm</string>
+  <string name="saved">Saved successfully</string>
+  <string name="show_on_map">Show on map</string>
 
-    <string name="event_name_error">Name cannot be empty</string>
-    <string name="event_location_error">Location cannot be empty</string>
-    <string name="event_date_error">Date cannot be empty</string>
+  <string name="event_name_error">Name cannot be empty</string>
+  <string name="event_location_error">Location cannot be empty</string>
+  <string name="event_date_error">Date cannot be empty</string>
 
-    <string name="save_sucess">Saved Successfully</string>
-    <string name="delete_sucess">Deleted Successfully</string>
+  <string name="save_sucess">Saved Successfully</string>
+  <string name="delete_sucess">Deleted Successfully</string>
 
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="shortcut_disabled_message">Shortcuts are available after Android 7.0</string>
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="shortcut_disabled_message">Shortcuts are available after Android 7.0</string>
 </resources>

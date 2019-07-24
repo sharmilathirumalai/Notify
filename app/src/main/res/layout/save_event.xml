@@ -105,6 +105,24 @@
                 android:textColor="@color/white"
                 android:textFontWeight="700" />
 
+            <Button
+                android:id="@+id/show_map"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center|bottom"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/button_style"
+                android:drawableLeft="@drawable/ic_location_icon"
+                android:paddingRight="100dp"
+                android:paddingLeft="100dp"
+                android:src="@drawable/ic_location_icon"
+                android:backgroundTint="@color/grey"
+                android:text="@string/show_on_map"
+                android:textColor="@color/colorPrimaryDark"
+                android:textFontWeight="700" />
+
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
