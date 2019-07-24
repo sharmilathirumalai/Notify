@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import androidx.fragment.app.Fragment;
 
@@ -68,6 +69,26 @@ public class EventsPage extends Fragment {
         };
 
         events.setMenuCreator(creator);
+
+        events.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View v, int position, long id){
+
+                EventModel event = eventsList.get(position);
+                Intent intent = new Intent(getContext(), SaveEvent.class);
+
+                Bundle detailsBundle = new Bundle();
+                detailsBundle.putString(SaveEvent.EventId, Long.toString(event.getId()));
+                detailsBundle.putString(SaveEvent.EventName, event.getName());
+                detailsBundle.putString(SaveEvent.EventDate, event.getDate().toString());
+                detailsBundle.putString(SaveEvent.EventLocation, event.getLocation());
+                detailsBundle.putString(SaveEvent.posterThumbnail, event.getposter());
+
+                intent.putExtra("bundle", detailsBundle);
+                String a = intent.getStringExtra(SaveEvent.EventId);
+                startActivity(intent);
+            }
+        });
 
         events.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override

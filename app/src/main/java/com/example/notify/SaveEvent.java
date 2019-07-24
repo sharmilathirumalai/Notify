@@ -31,6 +31,7 @@ public class SaveEvent extends AppCompatActivity {
     public static final String actionType = "ActionType";
     public static final String message = "message";
     public static final String TAG = "SaveEvent";
+    public static final String EventId = "event_id";
     public static final String posterThumbnail = "poster";
     public static final String EventName = "event_name";
     public static final String EventLocation = "event_location";
@@ -40,7 +41,7 @@ public class SaveEvent extends AppCompatActivity {
     private static long eventID = -1;
     private String action;
 
-    private EditText eventName,eventLocation,eventDate;
+    private EditText eventName, eventLocation, eventDate;
     private ImageView eventPoster;
     private Button savebtn;
     private FloatingActionButton sharebtn;
@@ -50,11 +51,11 @@ public class SaveEvent extends AppCompatActivity {
         Log.d(TAG, "SaveEvent: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.save_event);
-        setContentView(R.layout.save_event);
 
         Intent intent = getIntent();
+        Bundle data  = getIntent().getBundleExtra("bundle");
         action = intent.getStringExtra(actionType);
-        String id = intent.getStringExtra("event_id");
+        String id = data.getString(SaveEvent.EventId);
 
         eventName = findViewById(R.id.event_name);
         eventLocation = findViewById(R.id.event_location);
@@ -63,28 +64,30 @@ public class SaveEvent extends AppCompatActivity {
         savebtn = findViewById(R.id.save_btn);
         sharebtn = findViewById(R.id.share_btn);
 
-         if(id !=null) {
-             eventID = Long.parseLong(id);
-             eventName.setText(intent.getStringExtra(SaveEvent.EventName));
-             eventLocation.setText(intent.getStringExtra(SaveEvent.EventLocation));
-             eventDate.setText(intent.getStringExtra(SaveEvent.EventDate));
+        if (id != null) {
+            eventID = Long.parseLong(id);
+            eventName.setText(data.getString(SaveEvent.EventName));
+            eventLocation.setText(data.getString(SaveEvent.EventLocation));
+            eventDate.setText(data.getString(SaveEvent.EventDate));
 
-             try {
-                 imagepath = intent.getStringExtra(SaveEvent.posterThumbnail);
-                 FileInputStream file = new FileInputStream(new File(imagepath));
-                 eventPoster.setImageBitmap(BitmapFactory.decodeStream(file));
-                 file.close();
-             } catch (Exception e) {
-                 e.printStackTrace();
-             }
+            try {
+                imagepath = data.getString(SaveEvent.posterThumbnail);
+                if (imagepath != null && !imagepath.trim().isEmpty()) {
+                    FileInputStream file = new FileInputStream(new File(imagepath));
+                    eventPoster.setImageBitmap(BitmapFactory.decodeStream(file));
+                    file.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-         } else {
-             if (action.equals("QR")) {
-                 handleQR(intent);
-             } else {
-                 handleOCR(intent);
-             }
-         }
+        } else {
+            if (action.equals("QR")) {
+                handleQR(intent);
+            } else {
+                handleOCR(intent);
+            }
+        }
 
 
         savebtn.setOnClickListener(new View.OnClickListener() {
@@ -98,15 +101,15 @@ public class SaveEvent extends AppCompatActivity {
                 EventModel updatedevent;
 
                 database.open();
-                if(eventID != -1 ){
+                if (eventID != -1) {
                     updatedevent = database.update(event);
                 } else {
-                    updatedevent= database.create(event);
+                    updatedevent = database.create(event);
                 }
                 database.close();
                 Toast.makeText(getApplicationContext(), "Saved successfully", Toast.LENGTH_LONG).show();
             }
-            });
+        });
 
         sharebtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,11 +123,11 @@ public class SaveEvent extends AppCompatActivity {
     private void shareEvent() {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
-        String message = eventName.getText() + "\n" + "Date: " + eventDate.getText()  + "\n" + "Location: " + eventLocation.getText();
+        String message = eventName.getText() + "\n" + "Date: " + eventDate.getText() + "\n" + "Location: " + eventLocation.getText();
         intent.putExtra(Intent.EXTRA_SUBJECT, eventName.getText());
         intent.putExtra(Intent.EXTRA_TEXT, message);
         intent.setType("text/plain");
-        if(imagepath != "") {
+        if (imagepath != "") {
             intent.putExtra(Intent.EXTRA_STREAM, imagepath);
 
             intent.setType("image/jpeg");
@@ -139,7 +142,7 @@ public class SaveEvent extends AppCompatActivity {
         eventName.setText(messageArray[0]);
         eventLocation.setText(messageArray[2]);
         eventDate.setText(messageArray[1]);
-        Log.d(TAG, "messageArray: "+messageArray);
+        Log.d(TAG, "messageArray: " + messageArray);
     }
 
     // this method reads the decoded OCR text.
@@ -156,7 +159,7 @@ public class SaveEvent extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Log.d(TAG, "message: "+message);
+        Log.d(TAG, "message: " + message);
     }
 
     private void extractDate(String message) {
@@ -171,14 +174,14 @@ public class SaveEvent extends AppCompatActivity {
             SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzzz yyyy");
 
             try {
-                 formatteddate = format.parse(date);
+                formatteddate = format.parse(date);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
             Log.d(TAG, "dates: " + date);
             Log.d(TAG, "dates: " + formatteddate);
         }
-        if(formatteddate != null) {
+        if (formatteddate != null) {
             eventDate.setText(targetFormat.format(formatteddate));
         }
     }
@@ -187,6 +190,6 @@ public class SaveEvent extends AppCompatActivity {
         String[] messageArray = message.split("::");
         eventDate.setText(messageArray[0]);
         eventLocation.setText(messageArray[1]);
-        Log.d(TAG, "messageArray: "+messageArray);
+        Log.d(TAG, "messageArray: " + messageArray);
     }
 }
