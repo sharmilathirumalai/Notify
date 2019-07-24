@@ -14,8 +14,9 @@ public class ExpandNotification extends AppCompatActivity {
         setContentView(R.layout.expand_notification);
 
         Intent intent = getIntent();
-        String location = intent.getStringExtra("location");
-        Uri gmmIntentUri = Uri.parse("geo:0,0?q="+location);
+        String location = intent.getStringExtra("event_location");
+//        Uri gmmIntentUri = Uri.parse("geo:0,0?q="+location);
+        Uri gmmIntentUri = Uri.parse("google.navigation:q="+location);
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         startActivity(mapIntent);

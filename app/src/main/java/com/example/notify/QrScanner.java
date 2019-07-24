@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.notify.db.EventDataQueries;
 import com.example.notify.model.EventModel;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.zxing.Result;
 
 import java.text.DateFormat;
@@ -40,7 +41,7 @@ public class QrScanner extends AppCompatActivity implements ZXingScannerView.Res
         String message = result.getText();
 
 
-        if(getIntent().getStringExtra("FromActivityTAG") != null) {
+        if(!(getIntent().getStringExtra("FromActivityTAG") != null)) {
             Intent myIntent = new Intent(getApplicationContext(), SaveEvent.class);
             myIntent.putExtra(SaveEvent.actionType, actionType);
             myIntent.putExtra(SaveEvent.message, result.getText());
@@ -76,16 +77,20 @@ public class QrScanner extends AppCompatActivity implements ZXingScannerView.Res
                 // creating intent and passing the event informations
                 Intent intent = new Intent(this,NotificationReceiver.class);
                 intent.putExtra("id",modelObject.getId());
-                intent.putExtra("location",modelObject.getLocation());
-                intent.putExtra("date",modelObject.getDate());
-                intent.putExtra("name",modelObject.getName());
+                intent.putExtra("location",eventLocation);
+                intent.putExtra("date",eventDateString);
+                intent.putExtra("name",eventName);
                 Log.d(TAG, "location: "+modelObject.getLocation());
                 Log.d(TAG, "date: "+modelObject.getDate());
                 Log.d(TAG, "name: "+modelObject.getName());
                 NotificationReceiver alarm = new NotificationReceiver();
-                alarm.setAlarm(this, 2000, intent);
+                alarm.setAlarm(this, difference, intent);
 
                 Toast.makeText(this, "Saved successfully", Toast.LENGTH_LONG).show();
+//                Snackbar.make(CoordinatorLayout, R.string.saved,
+//                        Snackbar.LENGTH_SHORT)
+//                        .show();
+
                 Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(myIntent);
             } catch (Exception e) {
