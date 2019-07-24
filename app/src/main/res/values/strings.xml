@@ -24,6 +24,7 @@
 
     <string name="share_using">Share Via</string>
     <string name="save">Save</string>
+    <string name="set_alarm">Set alarm</string>
 
     <string name="event_name_error">Name cannot be empty</string>
     <string name="event_location_error">Location cannot be empty</string>
