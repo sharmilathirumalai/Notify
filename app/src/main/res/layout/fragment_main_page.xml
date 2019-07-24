@@ -99,17 +99,29 @@
                 android:isScrollContainer="false"
                 android:scrollbars="none">
             </ListView>
-            <TextView
-                android:id="@+id/emptyview"
+            <LinearLayout
                 android:layout_below="@+id/textView_events"
+                android:id="@+id/emptyview"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:textColor="@color/grey"
                 android:textAlignment="center"
                 android:fontFamily="@font/kaushanscript"
-                android:paddingTop="60dp"
+                android:paddingTop="25dp"
                 android:textSize="30sp"
                 android:text="No Events!"/>
+                <ImageView
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:paddingTop="10dp"
+                    android:src="@drawable/emptylist"/>
+            </LinearLayout>
         </RelativeLayout>
 
         <ProgressBar

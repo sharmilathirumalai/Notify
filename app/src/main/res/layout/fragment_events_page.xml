@@ -17,17 +17,27 @@
         android:scrollbars="none"
         android:layout_marginBottom="50dp">
     </com.baoyz.swipemenulistview.SwipeMenuListView>
-    <TextView
+    <LinearLayout
         android:id="@+id/emptyview"
-        android:layout_below="@+id/textView_events"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:textColor="@color/grey"
-        android:textAlignment="center"
-        android:fontFamily="@font/kaushanscript"
-        android:paddingTop="60dp"
-        android:textSize="30sp"
-        android:text="No Events!"/>
-        android:scrollbars="none">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:textAlignment="center"
+            android:fontFamily="@font/kaushanscript"
+            android:textSize="30sp"
+            android:text="No Events!"/>
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:paddingTop="10dp"
+            android:src="@drawable/emptylist"/>
+    </LinearLayout>
 
 </FrameLayout>
