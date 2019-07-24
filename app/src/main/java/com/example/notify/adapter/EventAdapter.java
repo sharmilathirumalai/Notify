@@ -2,7 +2,6 @@ package com.example.notify.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +12,7 @@ import android.widget.TextView;
 import com.example.notify.R;
 import com.example.notify.model.EventModel;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.List;
 
 public class EventAdapter extends BaseAdapter  {
@@ -69,7 +66,7 @@ public class EventAdapter extends BaseAdapter  {
     }
 
     /**
-     * Set name and id
+     * Set data in list item
      *
      * @param viewholder
      * @param events
@@ -79,16 +76,10 @@ public class EventAdapter extends BaseAdapter  {
         viewholder.location.setText(events.getLocation());
         viewholder.date.setText(events.getDate().toString());
         FileInputStream file = null;
-        if(events.getposter() != null && events.getposter() != "") {
-            try {
-                file = new FileInputStream(new File(events.getposter()));
-                viewholder.poster.setImageBitmap(BitmapFactory.decodeStream(file));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+        if(events.getposter() != null && !events.getposter().trim().isEmpty()) {
+            viewholder.poster.setImageResource(R.drawable.ocr);
         }
     }
-
 
 
     private static class ViewHolder {

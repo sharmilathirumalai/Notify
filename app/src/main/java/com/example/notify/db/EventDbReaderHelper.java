@@ -14,6 +14,7 @@ public class EventDbReaderHelper extends SQLiteOpenHelper {
         static final String COLUMN_EVENT_NAME = "event_name";
         static final String COLUMN_EVENT_DATE = "event_date";
         static final String COLUMN_EVENT_LOCATION = "event_location";
+        static final String COLUMN_EVENT_POSTER = "event_poster";
     }
 
 
@@ -25,6 +26,7 @@ public class EventDbReaderHelper extends SQLiteOpenHelper {
                     EventEntry._ID + " INTEGER PRIMARY KEY" + COMMA_SEP +
                     EventEntry.COLUMN_EVENT_NAME + TEXT_TYPE + COMMA_SEP +
                     EventEntry.COLUMN_EVENT_DATE + TEXT_TYPE + COMMA_SEP +
+                    EventEntry.COLUMN_EVENT_POSTER + TEXT_TYPE + COMMA_SEP +
                     EventEntry.COLUMN_EVENT_LOCATION + TEXT_TYPE + ")";
 
 

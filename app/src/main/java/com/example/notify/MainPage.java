@@ -15,11 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
@@ -48,13 +46,12 @@ public class MainPage extends Fragment {
     public static final String actionType = "OCR";
 
 
-
-    List<String> permissionsList = new ArrayList<>();
-
-    private String mCurrentPhotoPath;
     private ProgressBar loading;
     private RelativeLayout wrapper;
-    public String events;
+    private  ListView events;
+
+    private String mCurrentPhotoPath;
+    List<String> permissionsList = new ArrayList<>();
 
 
     public MainPage() {
@@ -96,21 +93,26 @@ public class MainPage extends Fragment {
             }
         });
 
-
-
         if (!checkPermissions()) {
             requestPermissions();
         }
 
         EventDataQueries database = new EventDataQueries(getContext());
-        final ListView events = view.findViewById(R.id.listview_events);
+        events = view.findViewById(R.id.listview_events);
         database.open();
         events.setAdapter(new EventAdapter(getActivity(), database.getUpcomingEvents()));
         database.close();
 
-
-
         return view;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        EventDataQueries database = new EventDataQueries(getContext());
+        database.open();
+        events.setAdapter(new EventAdapter(getActivity(), database.getUpcomingEvents()));
+        database.close();
     }
 
     private void launchCameraActivity() {
@@ -130,28 +132,6 @@ public class MainPage extends Fragment {
             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
             startActivityForResult(cameraIntent, CAMERA_PERMISSION_REQUEST);
         }
-    }
-
-    private void setDate(TextView view) {
-        String str = String.format("%tc", new Date());
-        view.setText(str);
-    }
-
-    private void setText(TextView events)
-    {
-//        SpannableString string=new SpannableString("Upcoming Events");
-//        string.setSpan(new BackgroundColorSpan(Color.argb(255,193,34,62)),0,15, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        events.setText(string);
-    }
-
-    private void setImage(ImageView image) {
-        image.setImageResource(R.drawable.ic_photo_frame);
-    }
-
-
-    private void setinfo(TextView info) {
-        String str_info = "Halifax Data Science\n" + "Social Meetup - Foggy Google\n" + "6pm";
-        info.setText(str_info);
     }
 
 
@@ -257,7 +237,6 @@ public class MainPage extends Fragment {
                     }
                 }
             }).execute(picture, data.getData());
-
 
         }
     }

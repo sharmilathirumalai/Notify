@@ -6,17 +6,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".EventsPage">
 
-    <!-- TODO: Update blank fragment layout -->
 
-
-    <ListView
+    <com.baoyz.swipemenulistview.SwipeMenuListView
         android:id="@+id/listview_events"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:dividerHeight="0.3dp"
+        android:dividerHeight="0.4dp"
         android:isScrollContainer="false"
         android:scrollbars="none"
-        android:layout_marginBottom="80dp">
-    </ListView>
+        android:layout_marginBottom="50dp">
+    </com.baoyz.swipemenulistview.SwipeMenuListView>
 
 </FrameLayout>

@@ -120,7 +120,7 @@ public class SaveEvent extends AppCompatActivity {
     private void shareEvent() {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
-        String message = eventName.getText() + "\n" + "Date: " + eventDate.getText();
+        String message = eventName.getText() + "\n" + "Date: " + eventDate.getText()  + "\n" + "Location: " + eventLocation.getText();
         intent.putExtra(Intent.EXTRA_SUBJECT, eventName.getText());
         intent.putExtra(Intent.EXTRA_TEXT, message);
         intent.setType("text/plain");

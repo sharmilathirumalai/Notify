@@ -29,7 +29,9 @@ public class EventDataQueries {
     private String[] eventColumns = {EventDbReaderHelper.EventEntry._ID,
             EventDbReaderHelper.EventEntry.COLUMN_EVENT_NAME,
             EventDbReaderHelper.EventEntry.COLUMN_EVENT_DATE,
-            EventDbReaderHelper.EventEntry.COLUMN_EVENT_LOCATION};
+            EventDbReaderHelper.EventEntry.COLUMN_EVENT_LOCATION,
+            EventDbReaderHelper.EventEntry.COLUMN_EVENT_POSTER
+    };
 
 
 
@@ -47,6 +49,7 @@ public class EventDataQueries {
         values.put(EventDbReaderHelper.EventEntry.COLUMN_EVENT_NAME, event.getName());
         values.put(EventDbReaderHelper.EventEntry.COLUMN_EVENT_LOCATION, event.getLocation());
         values.put(EventDbReaderHelper.EventEntry.COLUMN_EVENT_DATE, event.getDate().toString());
+        values.put(EventDbReaderHelper.EventEntry.COLUMN_EVENT_POSTER, event.getposter());
 
         Cursor dbCursor = database.query(EventDbReaderHelper.EventEntry.TABLE_NAME, null, null, null, null, null, null);
         String[] columnNames = dbCursor.getColumnNames();
@@ -68,6 +71,7 @@ public class EventDataQueries {
         values.put(EventDbReaderHelper.EventEntry.COLUMN_EVENT_NAME, event.getName());
         values.put(EventDbReaderHelper.EventEntry.COLUMN_EVENT_LOCATION, event.getLocation());
         values.put(EventDbReaderHelper.EventEntry.COLUMN_EVENT_DATE, event.getDate().toString());
+        values.put(EventDbReaderHelper.EventEntry.COLUMN_EVENT_POSTER, event.getposter());
 
         if(database.update(EventDbReaderHelper.EventEntry.TABLE_NAME, values,
                 EventDbReaderHelper.EventEntry._ID + "=" + event.getId(),
@@ -94,9 +98,11 @@ public class EventDataQueries {
 
     public boolean delete(EventModel event) {
         long id = event.getId();
+        String[] args = {String.valueOf(id)};
+
         return database.delete(EventDbReaderHelper.EventEntry.TABLE_NAME,
                 EventDbReaderHelper.EventEntry._ID
-                        + "=" + id, null) > 0;
+                        + "=?" , args) > 0;
     }
     public EventModel getEvent(long id) {
         String[] args = {String.valueOf(id)};
@@ -134,6 +140,6 @@ public class EventDataQueries {
 
     private EventModel getEventDataFromCursor(Cursor cursor) {
         return new EventModel(cursor.getLong(0), cursor.getString(1),
-                cursor.getString(2), cursor.getString(3));
+                cursor.getString(2), cursor.getString(3), cursor.getString(4));
     }
 }

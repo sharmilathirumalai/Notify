@@ -21,7 +21,7 @@ public class EventModel {
         this.event_location = event_location;
     }
 
-    public EventModel(long id, String event_name, String event_date, String event_location) {
+    public EventModel(long id, String event_name, String event_date, String event_location, String event_poster) {
         this.id = id;
         this.event_name = event_name;
         try {
@@ -33,6 +33,7 @@ public class EventModel {
             e.printStackTrace();
         }
         this.event_location = event_location;
+        this.event_poster = event_poster;
     }
 
     public EventModel(String event_name, String event_date, String event_location, String event_poster) {
