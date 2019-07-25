@@ -111,6 +111,7 @@ public class SaveEvent extends AppCompatActivity {
                 eventName.setEnabled(false);
                 eventDate.setEnabled(false);
                 eventLocation.setEnabled(false);
+                eventPriority.setClickable(false);
             } else {
                 handleOCR(intent);
             }

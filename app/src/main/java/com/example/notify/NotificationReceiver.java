@@ -60,9 +60,9 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         // intent for notification action
         Intent intentAction = new Intent(context, ExpandNotification.class);
-        notificationIntent.putExtra("event_name", event_name);
-        notificationIntent.putExtra("event_location", event_location);
-        notificationIntent.putExtra("event_date", event_date);
+        intentAction.putExtra(SaveEvent.EventName, event_name);
+        intentAction.putExtra(SaveEvent.EventLocation, event_location);
+        intentAction.putExtra(SaveEvent.EventDate, event_date);
         intentAction.putExtra("ActionType", "map");
         TaskStackBuilder stackBuilder1 = TaskStackBuilder.create(context);
         stackBuilder1.addParentStack(ExpandNotification.class);
