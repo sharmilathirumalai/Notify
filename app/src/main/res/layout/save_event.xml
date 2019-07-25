@@ -76,7 +76,7 @@
                 android:layout_marginRight="20dp"
                 android:background="@drawable/input_box"
                 android:drawableRight="@drawable/ic_calendar"
-                android:inputType="date"
+                android:inputType="datetime"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp" />
 
@@ -84,11 +84,12 @@
                 android:id="@+id/event_priority"
                 android:layout_width="150dp"
                 android:layout_height="20dp"
-                android:layout_marginLeft="40dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="20dp"
                 android:checked="true"
                 android:text="@string/label_priority"
+                android:textAlignment="textStart"
                 android:textSize="18dp"
                 android:theme="@style/custom_switch" />
 
@@ -114,13 +115,12 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/button_style"
-                android:drawableLeft="@drawable/ic_location_icon"
+                android:drawableLeft="@drawable/ic_location_white_24dp"
                 android:paddingRight="100dp"
                 android:paddingLeft="100dp"
-                android:src="@drawable/ic_location_icon"
-                android:backgroundTint="@color/grey"
+                android:backgroundTint="@color/colorPrimary"
                 android:text="@string/show_on_map"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/white"
                 android:textFontWeight="700" />
 
         </LinearLayout>

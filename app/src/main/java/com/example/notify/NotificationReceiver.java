@@ -1,3 +1,8 @@
+/*
+* This class is used to receive the notification triggered from the alarm manager.
+* This alarm is received by the receiver in the manifest file and is passed to this class.
+* */
+
 package com.example.notify;
 
 import android.annotation.SuppressLint;
@@ -9,6 +14,7 @@ import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.PowerManager;
 import android.util.Log;
@@ -76,7 +82,13 @@ public class NotificationReceiver extends BroadcastReceiver {
         builder.setAutoCancel(true);
         builder.setSmallIcon(R.drawable.ic_camera_black_24dp);
         builder.setContentIntent(pendingIntent);
-        builder.addAction(R.drawable.ic_location_icon, "Show nagivation", actionPendingIntent);
+
+        if(event_location != null && !event_location.trim().isEmpty()) {
+            NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.drawable.ic_location_icon, "Navigate", actionPendingIntent).build();
+            builder.setColor(context.getResources().getColor(R.color.colorPrimary));
+            builder.addAction(action);
+        }
+
         if(priority.equals("true")) {
             builder.setPriority(NotificationCompat.PRIORITY_HIGH);
             builder.setCategory(NotificationCompat.CATEGORY_ALARM);
@@ -92,6 +104,13 @@ public class NotificationReceiver extends BroadcastReceiver {
     }
 
     public void setAlarm(Context context, Date date, Intent intent)  {
+        SharedPreferences prefs = context.getSharedPreferences("notify", context.MODE_PRIVATE);
+        String notifyBefore = prefs.getString("notify_before", null);
+        long preferredTime =60L;
+
+        if(notifyBefore != null && notifyBefore.equals("30")){
+            preferredTime = 30L;
+        }
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
 
@@ -111,6 +130,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         c.add(Calendar.MINUTE, 2);
         Log.d(TAG, String.valueOf(c.getTimeInMillis()));
         Long minutesdifference = new Long(TimeUnit.MILLISECONDS.toMinutes(date.getTime() - todaysDate.getTime()));
+        minutesdifference = minutesdifference - preferredTime;
         Log.d(TAG, String.valueOf(minutesdifference.intValue()));
         c1.add(Calendar.MINUTE, minutesdifference.intValue());
 

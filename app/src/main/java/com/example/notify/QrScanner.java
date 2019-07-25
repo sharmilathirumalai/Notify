@@ -1,3 +1,9 @@
+/*
+*This class scans the QR code of the posters
+* Once the QR is scanned the information such as date,time and lccation of the event is obtained
+*
+*/
+
 package com.example.notify;
 
 import android.content.Intent;

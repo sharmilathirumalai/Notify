@@ -54,7 +54,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@android:color/white"
                 android:scaleType="fitXY"
-                android:src="@drawable/event_scan_1" />
+                android:src="@drawable/event_scan_poster" />
 
             <ImageButton
                 android:id="@+id/launch_qrscanner"
@@ -89,6 +89,7 @@
                 android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:textSize="17sp" />
+
             <ListView
                 android:id="@+id/listview_events"
                 android:layout_width="match_parent"
