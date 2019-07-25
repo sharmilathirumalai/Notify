@@ -16,7 +16,7 @@
         android:dividerHeight="0.4dp"
         android:isScrollContainer="false"
         android:scrollbars="none"
-        android:layout_marginBottom="50dp">
+        >
     </com.baoyz.swipemenulistview.SwipeMenuListView>
     <TextView
         android:id="@+id/emptyview"
@@ -29,6 +29,6 @@
         android:paddingTop="60dp"
         android:textSize="30sp"
         android:text="No Events!"/>
-        android:scrollbars="none"></com.baoyz.swipemenulistview.SwipeMenuListView>
+        android:scrollbars="none">
 
 </FrameLayout>

@@ -1,3 +1,8 @@
+/*
+* This class is used to receive the notification triggered from the alarm manager.
+* This alarm is received by the receiver in the manifest file and is passed to this class.
+* */
+
 package com.example.notify;
 
 import android.annotation.SuppressLint;

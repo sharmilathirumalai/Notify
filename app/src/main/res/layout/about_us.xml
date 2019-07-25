@@ -5,8 +5,8 @@
 
     <ImageView
         android:id="@+id/notify_img"
-        android:layout_width="201dp"
-        android:layout_height="175dp"
+        android:layout_width="210dp"
+        android:layout_height="205dp"
         android:scaleType="fitXY"
         android:src="@drawable/notify_aboutus" />
 
@@ -23,23 +23,36 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/about"
+        android:id="@+id/whats_new"
         android:layout_width="201dp"
-        android:layout_height="136dp"
+        android:layout_height="30dp"
         android:layout_below="@+id/version"
         android:layout_alignParentRight="true"
         android:layout_marginTop="0dp"
         android:layout_marginRight="0dp"
         android:paddingLeft="7dp"
-        android:text="What's New          Simple way to get notified about your events just by
+        android:text="What's New"
+        android:textColor="@color/blue"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/answer"
+        android:layout_width="198dp"
+        android:layout_height="132dp"
+        android:layout_below="@+id/whats_new"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="0dp"
+        android:paddingLeft="7dp"
+        android:text="Simple way to get notified about your events just by
 scanning the posters of events."
         android:textSize="20sp" />
     <TextView
         android:id="@+id/faq_head"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:layout_below="@+id/about"
-        android:text="FAQ's"
+        android:layout_below="@+id/answer"
+        android:text="Tips"
         android:textSize="30sp"
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
@@ -49,7 +62,7 @@ scanning the posters of events."
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:layout_below="@+id/faq_head"
-        android:text="1. How will the user delete an event from the event list?    The user can delete the event just by swiping the list item to the left and they will be shown options to delete and share their events."
+        android:text="1. The user can delete the event just by swiping the list item to the left and they will be shown options to delete and share their events."
         android:textSize="30sp"
         android:paddingLeft="10dp"
         android:paddingTop="10dp" />

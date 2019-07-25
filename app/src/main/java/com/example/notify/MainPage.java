@@ -1,4 +1,10 @@
-package com.example.notify;
+/*
+* This fragment is the first screen of the application where the user can take pictures of the posters
+* or scan QR codes in the posters by clicking on the respective buttons.
+* Once the user takes a picture or scans the QR code of the posters the event get generated and takes
+* the user to the save event page where the user will be able to save the event.
+* Once the event is being saved the events appears below the upcoming section in this fragment.
+* */package com.example.notify;
 
 
 import android.Manifest;
@@ -65,9 +71,11 @@ public class MainPage extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         View view = inflater.inflate(R.layout.fragment_main_page, container, false);
+
+        //Creates a list view for upcoming events
         ListView listView=view.findViewById(R.id.listview_events);
+        //Creating empty space when no events are available
         listView.setEmptyView(view.findViewById(R.id.emptyview));
 
         ImageButton launchCamera = view.findViewById(R.id.launch_camera);
@@ -75,7 +83,7 @@ public class MainPage extends Fragment {
         loading = view.findViewById(R.id.progress_circular);
         wrapper = view.findViewById(R.id.wrapper);
 
-
+        //Opens the camera and scans the QR code of the image when the button is clicked
         launchQR.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -86,6 +94,7 @@ public class MainPage extends Fragment {
             }
         });
 
+        //Opens the camera to capture the image when the button is clicked
         launchCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

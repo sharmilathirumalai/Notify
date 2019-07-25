@@ -1,3 +1,9 @@
+/*
+* This fragment is intiated once the camera takes a picture of the poster or when it scans the QR code
+* This allows the user to edit the information fetched and save the events
+* The save_event.xml containg the UI for this fragment
+*/
+
 package com.example.notify;
 
 import android.content.Intent;

@@ -1,3 +1,7 @@
+/*
+* The activity_main.xml has the UI for this activity
+**/
+
 package com.example.notify;
 
 import android.os.Bundle;

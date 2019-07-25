@@ -1,3 +1,10 @@
+/*
+* The settings is used to set the user preferences
+* The user can specify the alarm preferences such as if they want a notification half an hour before
+* the event or one hour before the event.
+* fragment_settings.xml contains the UI for this fragment
+* */
+
 package com.example.notify;
 
 
