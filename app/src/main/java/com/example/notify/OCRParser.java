@@ -26,7 +26,6 @@ import java.io.IOException;
 
 public class OCRParser extends AsyncTask<Object, Void, String> {
     private static final String TAG = "MainPage";
-    public static final String actionType = "OCR";
 
     private final FragmentActivity activity;
     private final AsyncResponse listener;
