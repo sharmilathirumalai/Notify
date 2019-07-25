@@ -4,6 +4,12 @@
 
 package com.example.notify;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -28,12 +34,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         setContentView(R.layout.activity_main);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
-
         if(getIntent().getIntExtra("selected_navigation", 0) == R.id.navigation_events) {
             bottomNavigationView.setSelectedItemId(R.id.navigation_events);
         } else  {
             bottomNavigationView.setSelectedItemId(R.id.navigation_home);
         }
+        createNotificationChannel();
     }
 
     @Override
@@ -55,6 +61,22 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
         Log.d(TAG, "onNavigationItemSelected:  else");
         return false;
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.app_name);
+            String description = "description";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }
 

@@ -46,13 +46,14 @@ public class SaveEvent extends AppCompatActivity {
     public static final String EventDate = "event_date";
     public static final String EventPriority = "event_priority";
 
-    private  String imagepath = "";
-    private static long eventID = -1;
+    private String imagepath = "";
+    private long eventID = -1;
     private String action;
 
     private EditText eventName, eventLocation, eventDate;
     private ImageView eventPoster;
     private Button savebtn;
+    private Button view_map_button;
     private FloatingActionButton sharebtn;
     private Switch eventPriority;
 
@@ -63,11 +64,11 @@ public class SaveEvent extends AppCompatActivity {
         setContentView(R.layout.save_event);
 
         Intent intent = getIntent();
-        Bundle data  = getIntent().getBundleExtra("bundle");
+        Bundle data = getIntent().getBundleExtra("bundle");
         action = intent.getStringExtra(actionType);
         String id = null;
         imagepath = "";
-        
+
         eventName = findViewById(R.id.event_name);
         eventLocation = findViewById(R.id.event_location);
         eventDate = findViewById(R.id.event_date);
@@ -75,11 +76,15 @@ public class SaveEvent extends AppCompatActivity {
         eventPriority = findViewById(R.id.event_priority);
         savebtn = findViewById(R.id.save_btn);
         sharebtn = findViewById(R.id.share_btn);
-        
-        if(data != null) { 
+
+        view_map_button = findViewById(R.id.show_map);
+        view_map_button.setVisibility(View.GONE);
+
+        final String event_location_string = intent.getStringExtra(SaveEvent.EventLocation);
+        if (data != null) {
             id = data.getString(SaveEvent.EventId);
         }
-        
+
         if (id != null) {
             eventID = Long.parseLong(id);
             eventName.setText(data.getString(SaveEvent.EventName));
@@ -101,6 +106,18 @@ public class SaveEvent extends AppCompatActivity {
         } else {
             if (action.equals("QR")) {
                 handleQR(intent);
+            } else if (action.equals("notification")) {
+                savebtn.setVisibility(View.GONE);
+                view_map_button.setVisibility(View.VISIBLE);
+
+                eventName.setText(intent.getStringExtra(SaveEvent.EventName));
+                eventLocation.setText(intent.getStringExtra(SaveEvent.EventLocation));
+                eventDate.setText(intent.getStringExtra(SaveEvent.EventDate));
+
+                eventName.setEnabled(false);
+                eventDate.setEnabled(false);
+                eventLocation.setEnabled(false);
+                eventPriority.setClickable(false);
             } else {
                 handleOCR(intent);
             }
@@ -138,20 +155,56 @@ public class SaveEvent extends AppCompatActivity {
 
                 EventModel updatedevent;
 
+                Log.d(TAG, "-- date: "+date);
+                Log.d(TAG, "-- location: "+location);
+                Log.d(TAG, "-- name: "+name);
+
                 database.open();
+                EventModel event;
                 if (eventID != -1) {
-                    EventModel event = new EventModel(eventID, name, date, location, imagepath, isPrior);
+                    event = new EventModel(eventID, name, date, location, imagepath, isPrior);
                     updatedevent = database.update(event);
                 } else {
-                    EventModel event = new EventModel(name, date, location, imagepath, isPrior);
+                    event = new EventModel(name, date, location, imagepath, isPrior);
                     updatedevent = database.create(event);
                 }
 
                 database.close();
+
+                // creating intent and passing the event information
+                Intent intent = new Intent(getApplicationContext(),NotificationReceiver.class);
+                intent.putExtra("id", updatedevent.getId());
+                intent.putExtra("location",event.getLocation());
+                intent.putExtra("date",event.getDate().toString());
+                intent.putExtra("name",event.getName());
+                intent.putExtra("priority", event.getIsPrior().toString());
+
+                Log.d(TAG, "location: "+updatedevent.getLocation());
+                Log.d(TAG, "date: "+updatedevent.getDate());
+                Log.d(TAG, "name: "+updatedevent.getName());
+                NotificationReceiver alarm = new NotificationReceiver();
+
+                alarm.setAlarm(getApplicationContext(), event.getDate(), intent);
+
+//                Toast.makeText(getApplicationContext(), "Saved successfully", Toast.LENGTH_LONG).show();
+
                 Toast.makeText(getApplicationContext(), getString(R.string.save_sucess), Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intentMainActivity = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra("selected_navigation", R.id.navigation_events);
-                startActivity(intent);
+                startActivity(intentMainActivity);
+//
+//                Intent mainPage = new Intent(getApplicationContext(),MainActivity.class);
+//                startActivity(mainPage);
+            }
+        });
+
+        view_map_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + event_location_string);
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
             }
         });
 
@@ -172,7 +225,7 @@ public class SaveEvent extends AppCompatActivity {
         intent.putExtra(Intent.EXTRA_TEXT, message);
         intent.setType("text/plain");
 
-        if (imagepath != "") {
+        if (imagepath != null && !imagepath.trim().isEmpty()) {
             intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(imagepath));
             intent.setType("image/jpeg");
         }
@@ -228,12 +281,5 @@ public class SaveEvent extends AppCompatActivity {
         if (formatteddate != null) {
             eventDate.setText(targetFormat.format(formatteddate));
         }
-    }
-
-    private void setExtractedText(String message) {
-        String[] messageArray = message.split("::");
-        eventDate.setText(messageArray[0]);
-        eventLocation.setText(messageArray[1]);
-        Log.d(TAG, "messageArray: " + messageArray);
     }
 }
