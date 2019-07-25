@@ -77,7 +77,13 @@ public class NotificationReceiver extends BroadcastReceiver {
         builder.setAutoCancel(true);
         builder.setSmallIcon(R.drawable.ic_camera_black_24dp);
         builder.setContentIntent(pendingIntent);
-        builder.addAction(R.drawable.ic_location_icon, "Show nagivation", actionPendingIntent);
+
+        if(event_location != null && !event_location.trim().isEmpty()) {
+            NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.drawable.ic_location_icon, "Navigate", actionPendingIntent).build();
+            builder.setColor(context.getResources().getColor(R.color.colorPrimary));
+            builder.addAction(action);
+        }
+
         if(priority.equals("true")) {
             builder.setPriority(NotificationCompat.PRIORITY_HIGH);
             builder.setCategory(NotificationCompat.CATEGORY_ALARM);

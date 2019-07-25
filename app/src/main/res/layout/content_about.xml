@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/notify_img"
+        android:layout_width="201dp"
+        android:layout_height="175dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/notify_aboutus" />
+
+    <TextView
+        android:id="@+id/version"
+        android:layout_width="201dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:paddingLeft="7dp"
+        android:paddingTop="10dp"
+        android:text="Version : 1.0.0"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/about"
+        android:layout_width="201dp"
+        android:layout_height="136dp"
+        android:layout_below="@+id/version"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="0dp"
+        android:paddingLeft="7dp"
+        android:text="What's New          Simple way to get notified about your events just by
+scanning the posters of events."
+        android:textSize="20sp" />
+    <TextView
+        android:id="@+id/faq_head"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_below="@+id/about"
+        android:text="FAQ's"
+        android:textSize="30sp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_below="@+id/faq_head"
+        android:text="1. How will the user delete an event from the event list?    The user can delete the event just by swiping the list item to the left and they will be shown options to delete and share their events."
+        android:textSize="30sp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp" />
+
+</RelativeLayout>
