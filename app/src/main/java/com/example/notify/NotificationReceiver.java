@@ -42,6 +42,8 @@ public class NotificationReceiver extends BroadcastReceiver {
         String event_name = intent.getStringExtra("name");
         String event_location = intent.getStringExtra("location");
         String event_date = intent.getStringExtra("date");
+        Long id = intent.getLongExtra("id", 0L);
+        String priority = intent.getStringExtra("priority");
 
         // create intent to be passed to next class when user clicks on the notification
         Intent notificationIntent = new Intent(context, SaveEvent.class);
@@ -52,8 +54,9 @@ public class NotificationReceiver extends BroadcastReceiver {
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addParentStack(SaveEvent.class);
         stackBuilder.addNextIntent(notificationIntent);
-        Log.d(TAG, "NotificationReceiver: ");
-        PendingIntent pendingIntent = stackBuilder.getPendingIntent(100, PendingIntent.FLAG_UPDATE_CURRENT);
+        Log.d(TAG, "NotificationReceiver: " + id.toString());
+
+        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, 0);
 
         // intent for notification action
         Intent intentAction = new Intent(context, ExpandNotification.class);
@@ -74,15 +77,24 @@ public class NotificationReceiver extends BroadcastReceiver {
         builder.setSmallIcon(R.drawable.ic_camera_black_24dp);
         builder.setContentIntent(pendingIntent);
         builder.addAction(R.drawable.ic_location_icon, "Show nagivation", actionPendingIntent);
+        if(priority.equals("true")) {
+            builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+            builder.setCategory(NotificationCompat.CATEGORY_ALARM);
+            Log.d(TAG, "NotificationReceiver: " + priority);
+        } else  {
+            builder.setPriority(NotificationCompat.PRIORITY_LOW);
+            builder.setCategory(NotificationCompat.CATEGORY_REMINDER);
+        }
         Notification notification = builder.build();
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(0, notification);
+        notificationManager.notify(id.intValue(), notification);
         wakeLock.release();
     }
 
     public void setAlarm(Context context, Date date, Intent intent)  {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date1 = new Date();
         String datestr= formatter.format(date1);

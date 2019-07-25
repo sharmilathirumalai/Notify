@@ -11,8 +11,6 @@ import com.example.notify.db.EventDataQueries;
 import com.example.notify.model.EventModel;
 import com.google.zxing.Result;
 
-import java.text.SimpleDateFormat;
-
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class QrScanner extends AppCompatActivity implements ZXingScannerView.ResultHandler {
@@ -36,54 +34,41 @@ public class QrScanner extends AppCompatActivity implements ZXingScannerView.Res
         Log.d(TAG, "handleResult: " + result.getText());
         String message = result.getText();
 
+        String[] messageArray = message.split("::");
 
-        if(!(getIntent().getStringExtra("FromActivityTAG") != null)) {
-            Intent myIntent = new Intent(getApplicationContext(), SaveEvent.class);
-            myIntent.putExtra(SaveEvent.actionType, actionType);
-            myIntent.putExtra(SaveEvent.message, result.getText());
-            startActivity(myIntent);
-        } else {
-            String[] messageArray = message.split("::");
-            // these data has to be stored in local
-            // todo
-            String eventDateString = messageArray[1];
-            String eventLocation = messageArray[2];
-            String eventName = messageArray[0];
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String eventDateString = messageArray[1];
+        String eventLocation = messageArray[2];
+        String eventName = messageArray[0];
 
-            try {
-                // todo change the time parameter.
-                // todo. store the details in local storage. with that id, create an intent and push it to alarmManager
+        try {
+            final EventDataQueries database = new EventDataQueries(getApplicationContext());
+            EventModel event = new EventModel(eventName, eventDateString, eventLocation);
+            database.open();
+            EventModel modelObject = database.create(event);
+            database.close();
 
-                final EventDataQueries database = new EventDataQueries(getApplicationContext());
-                EventModel event = new EventModel(eventName, eventDateString, eventLocation);
-                database.open();
-                EventModel modelObject = database.create(event);
-                database.close();
+            // creating intent and passing the event informations
+            Intent intent = new Intent(this, NotificationReceiver.class);
+            intent.putExtra("id", modelObject.getId());
+            intent.putExtra("location", event.getLocation());
+            intent.putExtra("date", event.getDate().toString());
+            intent.putExtra("name", event.getName());
+            intent.putExtra("priority", event.getIsPrior().toString());
+            Log.d(TAG, "location: " + event.getLocation());
+            Log.d(TAG, "date: " + event.getDate());
+            Log.d(TAG, "name: " + event.getName());
+            NotificationReceiver alarm = new NotificationReceiver();
+            alarm.setAlarm(this, event.getDate(), intent);
 
-                // creating intent and passing the event informations
-                Intent intent = new Intent(this,NotificationReceiver.class);
-                intent.putExtra("id",modelObject.getId());
-                intent.putExtra("location",event.getLocation());
-                intent.putExtra("date",event.getDate().toString());
-                intent.putExtra("name",event.getName());
-                Log.d(TAG, "location: "+event.getLocation());
-                Log.d(TAG, "date: "+event.getDate());
-                Log.d(TAG, "name: "+event.getName());
-                NotificationReceiver alarm = new NotificationReceiver();
-                alarm.setAlarm(this, event.getDate(), intent);
-
-                Toast.makeText(this, "Saved successfully", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Saved successfully", Toast.LENGTH_LONG).show();
 //                Snackbar.make(CoordinatorLayout, R.string.saved,
 //                        Snackbar.LENGTH_SHORT)
 //                        .show();
 
-                Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(myIntent);
-            } catch (Exception e) {
-                Toast.makeText(this, "Some error occurred while reading the QR", Toast.LENGTH_LONG).show();
-            }
+            Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(myIntent);
+        } catch (Exception e) {
+            Toast.makeText(this, "Some error occurred while reading the QR", Toast.LENGTH_LONG).show();
         }
-
     }
 }

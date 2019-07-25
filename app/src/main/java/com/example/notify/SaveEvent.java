@@ -170,6 +170,8 @@ public class SaveEvent extends AppCompatActivity {
                 intent.putExtra("location",event.getLocation());
                 intent.putExtra("date",event.getDate().toString());
                 intent.putExtra("name",event.getName());
+                intent.putExtra("priority", event.getIsPrior().toString());
+
                 Log.d(TAG, "location: "+updatedevent.getLocation());
                 Log.d(TAG, "date: "+updatedevent.getDate());
                 Log.d(TAG, "name: "+updatedevent.getName());
