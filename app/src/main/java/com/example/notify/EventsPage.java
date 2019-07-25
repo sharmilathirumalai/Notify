@@ -1,3 +1,13 @@
+/*
+* This fragment has a list of events.
+* This list includes the completed and upcoming events
+* The user will be able to share or delete the events by swiping the list items to the left.
+* The empty state of this fragments shows a No Events tag when there are no events to display.
+* fragment_events_page.xml has the UI for this fragment
+* */
+
+
+
 package com.example.notify;
 
 
@@ -41,6 +51,7 @@ public class EventsPage extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_events_page, container, false);
+
         SwipeMenuListView listView=v.findViewById(R.id.listview_events);
         listView.setEmptyView(v.findViewById(R.id.emptyview));
 

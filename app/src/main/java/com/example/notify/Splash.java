@@ -1,3 +1,9 @@
+/*
+* The splash screen is the one which the user can view after clicking the application
+* This screen displays the icon of the application
+* The splash.xml has the UI for this fragment
+*/
+
 package com.example.notify;
 
 import android.content.Intent;

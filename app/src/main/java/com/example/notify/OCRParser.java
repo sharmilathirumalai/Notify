@@ -1,3 +1,8 @@
+/*
+* This class is used to read the text from the images of the posters.
+* Once the image is captures and read, the information such as time, date and location of the event is
+* obtained.
+* */
 package com.example.notify;
 
 import android.content.Context;

@@ -1,3 +1,9 @@
+/*
+* This class saves the images captured by the camera in the users local storage under a folder named notify.
+*
+* */
+
+
 package com.example.notify;
 
 import android.content.Context;

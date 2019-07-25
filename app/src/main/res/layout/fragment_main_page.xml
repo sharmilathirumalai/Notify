@@ -89,6 +89,7 @@
                 android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:textSize="17sp" />
+
             <ListView
                 android:id="@+id/listview_events"
                 android:layout_width="match_parent"
