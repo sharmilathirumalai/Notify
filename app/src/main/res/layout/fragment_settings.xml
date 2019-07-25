@@ -1,38 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Settings">
-
-    <!-- TODO: Update blank fragment layout -->
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginLeft="10dp"
-        android:orientation="vertical" >
-
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:paddingLeft="20dp"
             android:layout_height="wrap_content"
-            android:paddingTop="25dp"
-            android:paddingBottom="5dp"
             android:text="@string/set_alarm"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="20sp"
-            android:textStyle="normal" />
+            android:textSize="20sp"/>
 
         <Spinner
-            android:id="@+id/spinner1"
-            android:layout_width="match_parent"
+            android:id="@+id/alarm_before_spinner"
+            android:layout_width="0dp"
+            android:layout_weight="0.7"
             android:layout_height="70dp"
             style="@android:style/Widget.Holo.Light.Spinner"
             android:spinnerMode="dropdown"
             android:entries="@array/alarms" />
-
     </LinearLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:padding="20dp"
+        android:layout_marginTop="2dp"
+        android:layout_height="70dp"
+        android:textSize="20sp"
+        android:background="@color/darkGrey"
+        android:text="About"/>
 
-</FrameLayout>
+
+</LinearLayout>
