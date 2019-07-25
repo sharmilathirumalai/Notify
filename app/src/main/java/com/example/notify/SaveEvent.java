@@ -218,7 +218,7 @@ public class SaveEvent extends AppCompatActivity {
         intent.putExtra(Intent.EXTRA_TEXT, message);
         intent.setType("text/plain");
 
-        if (imagepath != "") {
+        if (imagepath != null && !imagepath.trim().isEmpty()) {
             intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(imagepath));
             intent.setType("image/jpeg");
         }
@@ -274,12 +274,5 @@ public class SaveEvent extends AppCompatActivity {
         if (formatteddate != null) {
             eventDate.setText(targetFormat.format(formatteddate));
         }
-    }
-
-    private void setExtractedText(String message) {
-        String[] messageArray = message.split("::");
-        eventDate.setText(messageArray[0]);
-        eventLocation.setText(messageArray[1]);
-        Log.d(TAG, "messageArray: " + messageArray);
     }
 }
