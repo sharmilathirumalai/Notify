@@ -179,22 +179,15 @@ public class SaveEvent extends AppCompatActivity {
                 intent.putExtra("name",event.getName());
                 intent.putExtra("priority", event.getIsPrior().toString());
 
-                Log.d(TAG, "location: "+updatedevent.getLocation());
-                Log.d(TAG, "date: "+updatedevent.getDate());
-                Log.d(TAG, "name: "+updatedevent.getName());
                 NotificationReceiver alarm = new NotificationReceiver();
 
                 alarm.setAlarm(getApplicationContext(), event.getDate(), intent);
 
-//                Toast.makeText(getApplicationContext(), "Saved successfully", Toast.LENGTH_LONG).show();
 
                 Toast.makeText(getApplicationContext(), getString(R.string.save_sucess), Toast.LENGTH_LONG).show();
                 Intent intentMainActivity = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra("selected_navigation", R.id.navigation_events);
                 startActivity(intentMainActivity);
-//
-//                Intent mainPage = new Intent(getApplicationContext(),MainActivity.class);
-//                startActivity(mainPage);
             }
         });
 
