@@ -1,5 +1,5 @@
 ## Notify
-Notify is an event reminder app, which adds the reminder of events just by scanning the posters. Using OCR, DateParser and QR Scanner the information such as location, date and time of the event is extracted by scanning the posters of the events.
+Notify is an event reminder app, which adds the reminder of events just by scanning the posters. Using OCR, NLP (DateParser) and QR Scanner the information such as location, date and time of the event is extracted by scanning the posters of the events.
 
 **Inspiration**: This idea is inspired by Google automatic calendar notifications.    
 
