@@ -26,6 +26,11 @@ Notify is an event reminder app, which adds the reminder of events just by scann
 *	lopspower-CircularImageView: CircularImageView library is used to make circular ImageView in android layout xml. (https://github.com/lopspower/CircularImageView) [6]
 *	googlesamples-android-vision: We have used the Google mobile vision api to convert text in image into string. (https://github.com/googlesamples/android-vision) [7]
 
+## Developer Wiki
+* [Design](https://github.com/sharmilathirumalai/Notify/wiki/Design-&-Feature#high-level-organization)
+* [Features](https://github.com/sharmilathirumalai/Notify/wiki/Design-&-Feature#features)
+* [Future Works](https://github.com/sharmilathirumalai/Notify/wiki/Design-&-Feature#future-plans)
+* [Code Documentation](https://github.com/sharmilathirumalai/Notify/wiki/Code-Documentation)
 
 ## Authors
 1. Sharmila Thirumalainathan (Owner)
